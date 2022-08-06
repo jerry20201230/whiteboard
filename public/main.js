@@ -22,10 +22,10 @@
   canvas.addEventListener('touchend', onMouseUp, false);
   canvas.addEventListener('touchcancel', onMouseUp, false);
   canvas.addEventListener('touchmove', throttle(onMouseMove, 10), false);
-
+/*
   for (var i = 0; i < colors.length; i++){
     colors[i].addEventListener('click', onColorUpdate, false);
-  }
+  }*/
 
   socket.on('drawing', onDrawingEvent);
 
@@ -74,10 +74,9 @@
     current.y = e.clientY||e.touches[0].clientY;
   }
 
-  function onColorUpdate(e){
-    current.color = e.target.className.split(' ')[1];
-  }
-
+$("#color-picker").on("blur",function(){
+  current.color = $("#color-picker").val()
+})
   // limit the number of events per second
   function throttle(callback, delay) {
     var previousCall = new Date().getTime();

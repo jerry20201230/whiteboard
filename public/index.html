@@ -10,14 +10,13 @@
   <canvas class="whiteboard" ></canvas>
 
   <div class="colors">
-    <div class="color black"></div>
-    <div class="color red"></div>
-    <div class="color green"></div>
-    <div class="color blue"></div>
-    <div class="color yellow"></div>
+  <input type="text" id="color-picker" data-jscolor="{color:#000}">
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.8/jscolor.js' integrity='sha512-mtiG+kTbrG6RDYwzcVr6S3kIhSsdAkuft9To1ILQklUSoiBRysnRoqEz6qdJPgLz1ecmndQmTITjCi9jmjRe6w==' crossorigin='anonymous'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js' integrity='sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==' crossorigin='anonymous'></script>
+  
   <script src="/main.js"></script>
 </body>
 </html>
