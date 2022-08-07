@@ -31,9 +31,15 @@
 
   socket.on('drawing', onDrawingEvent);
   socket.on('getData',(data)=>{
+    $("#infoText").text("正在重生圖面...")
     for(let i=0;i<data.x1.length;i++){
-      drawLine(data.x0[i],data.y0[i],data.x1[i],data.y1[i],data.color[i])
+  
+      var w = canvas.width;
+      var h = canvas.height;
+
+      drawLine(data.x0[i] * w, data.y0[i] * h, data.x1[i] * w, data.y1[i] * h, data.color[i]);
     }
+    $("#infoText").text("就緒")
   })
 
   window.addEventListener('resize', onResize, false);
@@ -107,7 +113,7 @@ $("#color-picker").on("blur",function(){
   function onResize() {
     canvas.width = window.innerWidth -20;
     canvas.height = window.innerHeight -90;
-    socket.emit('getData')
+    socket.emit('getData','p')
   }
 
 
@@ -124,7 +130,7 @@ window.onfocus = function () {
    } }
 
    window.onload = function () {
-    socket.emit('getData')
+    socket.emit('getData','p')
    }
 })();
 

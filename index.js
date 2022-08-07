@@ -35,6 +35,8 @@ function onConnection(socket){
 })
 
 socket.on("getData",function(){
+  console.log("data")
+  
   io.to(socket.id).emit("getData",{'x0':x0,'y0':y0,'x1':x1,'y1':y1,'color':color})
 })
 }
