@@ -111,8 +111,8 @@ $("#color-picker").on("blur",function(){
 
   // make the canvas fill its parent
   function onResize() {
-    canvas.width = window.innerWidth -20;
-    canvas.height = window.innerHeight -90;
+    canvas.width = window.innerWidth -50;
+    canvas.height = window.innerHeight -150;
     socket.emit('getData','p')
     $("#infoText").text("正在同步...")
   }
