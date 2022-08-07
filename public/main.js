@@ -102,9 +102,8 @@ $("#color-picker").on("blur",function(){
     canvas.height = window.innerHeight;
   }
 
-})();
 
-
+  
 window.onblur = function () { 
   if(socket.connected){
   $("#browser-icon").attr('href',"/icon/icon-black.png")
@@ -115,3 +114,7 @@ window.onfocus = function () {
   if(socket.connected){
   $("#browser-icon").attr('href',"/icon/icon-white.png")
    } }
+
+})();
+
+
