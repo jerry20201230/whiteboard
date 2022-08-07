@@ -1,4 +1,4 @@
-
+//node index
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
@@ -15,6 +15,8 @@ app.get(/icon/, (req, res) => {
 app.get('*', function (req, res) {
   res.status(404).sendFile(__dirname + '/public/404.html');
 });
+
+
 function onConnection(socket){
   socket.on('drawing', (data) => socket.broadcast.emit('drawing', data));
 }

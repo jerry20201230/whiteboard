@@ -4,7 +4,7 @@
 
   var socket = io();
   var canvas = document.getElementsByClassName('whiteboard')[0];
-  var colors = document.getElementsByClassName('color');
+  //var colors = document.getElementsByClassName('color');
   var context = canvas.getContext('2d');
 
   var current = {
@@ -103,3 +103,15 @@ $("#color-picker").on("blur",function(){
   }
 
 })();
+
+
+window.onblur = function () { 
+  if(socket.connected){
+  $("#browser-icon").attr('href',"/icon/icon-black.png")
+  }
+}
+
+window.onfocus = function () { 
+  if(socket.connected){
+  $("#browser-icon").attr('href',"/icon/icon-white.png")
+   } }
