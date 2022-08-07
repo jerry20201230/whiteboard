@@ -28,6 +28,11 @@
   }*/
 
   socket.on('drawing', onDrawingEvent);
+  socket.on('getData',(data)=>{
+    for(let i=0;i<data.x1.length;i++){
+      drawLine(data.x0[i],data.y0[i],data.x1[i],data.y1[i],data.color[i])
+    }
+  })
 
   window.addEventListener('resize', onResize, false);
   onResize();
@@ -100,6 +105,7 @@ $("#color-picker").on("blur",function(){
   function onResize() {
     canvas.width = window.innerWidth -20;
     canvas.height = window.innerHeight -90;
+    socket.emit('getData')
   }
 
 
