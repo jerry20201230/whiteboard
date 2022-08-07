@@ -27,6 +27,8 @@
     colors[i].addEventListener('click', onColorUpdate, false);
   }*/
 
+  
+
   socket.on('drawing', onDrawingEvent);
   socket.on('getData',(data)=>{
     for(let i=0;i<data.x1.length;i++){
