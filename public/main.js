@@ -31,7 +31,7 @@
 
   socket.on('drawing', onDrawingEvent);
   socket.on('getData',(data)=>{
-    $("#infoText").text("正在重生圖面...")
+
     for(let i=0;i<data.x1.length;i++){
   
       var w = canvas.width;
@@ -114,6 +114,7 @@ $("#color-picker").on("blur",function(){
     canvas.width = window.innerWidth -20;
     canvas.height = window.innerHeight -90;
     socket.emit('getData','p')
+    $("#infoText").text("正在同步...")
   }
 
 
@@ -131,6 +132,7 @@ window.onfocus = function () {
 
    window.onload = function () {
     socket.emit('getData','p')
+    $("#infoText").text("正在同步...")
    }
 })();
 
