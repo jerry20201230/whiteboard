@@ -123,6 +123,9 @@ window.onfocus = function () {
   $("#browser-icon").attr('href',"/icon/icon-white.png")
    } }
 
+   window.onload = function () {
+    socket.emit('getData')
+   }
 })();
 
 
