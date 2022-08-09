@@ -53,7 +53,7 @@
     context.strokeStyle = color;
     context.lineWidth = 2;
     context.stroke();
-    context.closePath();
+  //  context.closePath();
 
     if (!emit) { return; }
     var w = canvas.width;
