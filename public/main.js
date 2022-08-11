@@ -40,6 +40,9 @@
       drawLine(data.x0[i] * w, data.y0[i] * h, data.x1[i] * w, data.y1[i] * h, data.color[i]);
     }
     $("#infoText").text("就緒")
+   
+    $("#whiteboard-loading").hide()
+ $("#whiteboard").show()
   })
 
   window.addEventListener('resize', onResize, false);
@@ -113,6 +116,10 @@ $("#color-picker").on("blur",function(){
   function onResize() {
     canvas.width = window.innerWidth -50;
     canvas.height = window.innerHeight -150;
+    $("#whiteboard-loading").css("width",window.innerWidth -50)
+    $("#whiteboard-loading").css("height",window.innerHeight -150)
+    $("#whiteboard-loading").show()
+    $("#whiteboard").hide()
     socket.emit('getData','p')
     $("#infoText").text("正在同步...")
   }
