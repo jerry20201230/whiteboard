@@ -336,8 +336,15 @@ z-index: 1050;" hidden>
 
     <center>
     <canvas class="whiteboard" style="border: 1px #000 solid; display: none;"></canvas>
-    <div id="whiteboard-loading">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias accusantium corporis inventore aliquid aliquam eveniet, nostrum minima, mollitia modi cum esse amet labore, dolorum adipisci veritatis reprehenderit distinctio fuga? Consequatur.</div>
+    <div id="whiteboard-loading" style="padding: 10%; border: 1px #000 solid;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">正在同步資料...</span>
+          </div>
+          <p></p>
+        <span>正在同步資料...</span>
+    </div>
     </center>
+    <p></p>
     <div class="flex">
       <input type="text" id="color-picker" value="#000000FF"
         data-jscolor="{closeButton:true, closeText:'關閉',backgroundColor:'#000', buttonColor:'#fff'}">
