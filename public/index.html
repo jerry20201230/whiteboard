@@ -360,45 +360,68 @@ z-index: 1050;" hidden>
     
 <div
 class="g-recaptcha"
-data-sitekey="網站金鑰"
+data-sitekey="6LcJwl4hAAAAADWzbkUuYV1CSFW0g6CMs9ZoVaaS"
 data-theme="dark" data-size="normal"
 data-callback="verify"
 data-expired-callback="expired"
 data-error-callback="error">
 </div>
 <script>
-
-function verifyCallback(token) {
+ var uriIP = 'https://www.cloudflare.com/cdn-cgi/trace';
       
-      var formData = new FormData();
-      formData.append('token', token);
-
-    
-      fetch(uriGAS, {
-        method: "POST",
-        body: formData
-      }).then(response => response.json())
+      // GAS 部署為網路應用程式後取得的 URL
+      var uriGAS = 'https://script.google.com/macros/s/AKfycbzl4lhlnlRV30ODAmuJzgcteMb4O7Wd1mvw0a_Bwu1_RTFpdXO4UFiDzRq3ngockVLd/exec';
+      
+      // 取 ip
+      var ip;
+      fetch(uriIP)
+        .then(response => response.text())
         .then(result => {
-          if(result.success) {
-           alert("success!")
-          } else {
-            window.alert(result['error-codes'][0])
+          var resultArr = result.split('\n');
+          for(var i = 0, len = resultArr.length; i < len; i++)	{
+            var tempArr = resultArr[i].split('=');
+            if(tempArr[0] == 'ip') {
+              ip = tempArr[1];
+              break;
+            }
           }
         })
         .catch(err => {
           window.alert(err)
-        })
-    }
-    
-    // 過期要做的事
-    function expired(ex) {
-      window.alert('reCAPTCHA 驗證程序到期')
-    }
-    
-    // 失敗要做的事
-    function error(err) {
-      window.alert('reCAPTCHA 驗證失敗')
-    }
+        });
+      
+      // 方法 1：reCAPTCHA 送到後端做驗證
+      function verifyCallback(token) {
+      
+        var formData = new FormData();
+        formData.append('token', token);
+        formData.append('ip', ip);
+      
+        fetch(uriGAS, {
+          method: "POST",
+          body: formData
+        }).then(response => response.json())
+          .then(result => {
+            if(result.success) {
+              document.getElementById('verify').classList.remove('none');
+            } else {
+              window.alert(result['error-codes'][0])
+            }
+          })
+          .catch(err => {
+            window.alert(err)
+          })
+      }
+      
+      // 過期要做的事
+      function expired(ex) {
+        window.alert('reCAPTCHA 驗證程序到期')
+      }
+      
+      // 失敗要做的事
+      function error(err) {
+        window.alert('reCAPTCHA 驗證失敗')
+      }
 </script>
    
 </div>
