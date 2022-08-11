@@ -42,7 +42,7 @@
     $("#infoText").text("就緒")
    
     $("#whiteboard-loading").hide()
- $("#whiteboard").show()
+ $(".whiteboard").show()
   })
 
   window.addEventListener('resize', onResize, false);
@@ -119,7 +119,7 @@ $("#color-picker").on("blur",function(){
     $("#whiteboard-loading").css("width",window.innerWidth -50)
     $("#whiteboard-loading").css("height",window.innerHeight -150)
     $("#whiteboard-loading").show()
-    $("#whiteboard").hide()
+    $(".whiteboard").hide()
     socket.emit('getData','p')
     $("#infoText").text("正在同步...")
   }
@@ -139,6 +139,7 @@ window.onfocus = function () {
 
    window.onload = function () {
     socket.emit('getData','p')
+    $("#whiteboard-loading").show()
     $("#infoText").text("正在同步...")
    }
 })();
