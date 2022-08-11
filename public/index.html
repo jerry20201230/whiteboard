@@ -210,7 +210,7 @@
         z-index: 20000 !important;
     }
 </style>
-
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 </head>
 
@@ -357,8 +357,52 @@ z-index: 1050;" hidden>
 <div id="login-page" hidden>
 
     <center> <span style="margin-top: 45vh;"><h1>HI</h1></span></center>
+    
+<div
+class="g-recaptcha"
+data-sitekey="網站金鑰"
+data-theme="dark" data-size="normal"
+data-callback="verify"
+data-expired-callback="expired"
+data-error-callback="error">
+</div>
+<script>
+
+function verifyCallback(token) {
+      
+      var formData = new FormData();
+      formData.append('token', token);
+
+    
+      fetch(uriGAS, {
+        method: "POST",
+        body: formData
+      }).then(response => response.json())
+        .then(result => {
+          if(result.success) {
+           alert("success!")
+          } else {
+            window.alert(result['error-codes'][0])
+          }
+        })
+        .catch(err => {
+          window.alert(err)
+        })
+    }
+    
+    // 過期要做的事
+    function expired(ex) {
+      window.alert('reCAPTCHA 驗證程序到期')
+    }
+    
+    // 失敗要做的事
+    function error(err) {
+      window.alert('reCAPTCHA 驗證失敗')
+    }
+</script>
    
 </div>
+
 
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.js' integrity='sha512-39Q5Yw4jtWPVkYu5Dry3HiRh6DWG4FDODb/rHF+X2Xp0kzhg9VgTyYV209uQ/EsqPDP/4dDvwm1rb8JgnAkHNg==' crossorigin='anonymous'></script>
