@@ -301,53 +301,12 @@
         $(".user-nickname").text(localStorage.getItem('user_name'))
 
     }
- var uriIP = 'https://www.cloudflare.com/cdn-cgi/trace';
-      
-      // GAS 部署為網路應用程式後取得的 URL
-      var uriGAS = 'https://script.google.com/macros/s/AKfycbzl4lhlnlRV30ODAmuJzgcteMb4O7Wd1mvw0a_Bwu1_RTFpdXO4UFiDzRq3ngockVLd/exec';
-      
-      // 取 ip
-      var myip,isRobot=-1;
-      fetch(uriIP)
-        .then(response => response.text())
-        .then(result => {
-          var resultArr = result.split('\n');
-          for(var i = 0, len = resultArr.length; i < len; i++)	{
-            var tempArr = resultArr[i].split('=');
-            if(tempArr[0] == 'ip') {
-              myip = tempArr[1];
-              break;
-            }
-          }
-        })
-        .catch(err => {
-          window.alert(err)
-        });
-      
-      // 方法 1：reCAPTCHA 送到後端做驗證
+ var isRobot = -1
       function verifyCallback(token) {
-      
-        var formData = new FormData();
-        formData.append('token', token);
-        formData.append('ip', myip);
-      
-        fetch(uriGAS, {
-          method: "POST",
-          body: formData
-        }).then(response => response.json())
-          .then(result => {
-            if(result.success) {
-              isRobot = 0
-            } else {
-              //window.alert(result['error-codes'][0])
-              isRobot = 1
-            }
-          })
-          .catch(err => {
-            isRobot = -1
-            //window.alert(err)
-          })
-          console.log(isRobot)
+    
+          isRobot = 0
+          console.log("recaptcha success worked!")
+
       }
       
       // 過期要做的事
