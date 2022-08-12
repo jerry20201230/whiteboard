@@ -353,31 +353,48 @@ z-index: 1050;" hidden>
 <span id="infoText" >正在同步...</span>
   </div>
 
-  <div id="login-user-setting-page" hidden>
-
-
-  </div>
-
-<div id="login-robot-verify-page" hidden>
-
-   <h1>Hi ~ 歡迎使用畫板</h1>
+  <div id="login-user-setting-page" style="display: none;">
+<h1>Hi ~ 歡迎使用畫板</h1>
     
    <div class="input-group mb-3">
     <span class="input-group-text">輸入暱稱</span>
-    <input type="text" id="nickname-input-set" class="form-control" placeholder="確認房間密碼" aria-label="確認房間密碼" >
+    <input type="text" id="nickname-input-set"
+    onblur="if($(this).val()==''){$(this).attr('class','form-control is-invalid')}else{$(this).attr('class','form-control')}"
+    class="form-control" placeholder="輸入暱稱" aria-label="輸入暱稱" >
 
+    <div class="invalid-feedback">
+       請輸入暱稱
+      </div>
+    </div>
+    <p>
+        <button class="btn btn-outline-primary" onclick="if($('#nickname-input-set').val()==''){$('#nickname-input-set').attr('class','form-control is-invalid')}else{$('#nickname-input-set').attr('class','form-control');$('#login-robot-verify-page').show();$('#login-user-setting-page').hide()}">> 下一步</button>
+
+    </p>
+
+  </div>
+
+<div id="login-robot-verify-page" style="display: none;">
+   <h1><span class="user-nickname"></span> ，請勾選核取方塊以完成認證</h1>
+    <p></p>
+    <div
+    class="g-recaptcha"
+    data-sitekey="6LcJwl4hAAAAADWzbkUuYV1CSFW0g6CMs9ZoVaaS"
+    data-theme="dark" data-size="normal"
+    data-callback="verify"
+    data-expired-callback="expired"
+    data-error-callback="error">
+    </div>
+   
 </div>
-<div
-class="g-recaptcha"
-data-sitekey="6LcJwl4hAAAAADWzbkUuYV1CSFW0g6CMs9ZoVaaS"
-data-theme="dark" data-size="normal"
-data-callback="verify"
-data-expired-callback="expired"
-data-error-callback="error">
-</div>
+
 <script>
     if(localStorage.getItem("logined?") == null ){
 
+        $("#login-user-setting-page").show()
+
+    }else{
+        $("#login-robot-verify-page").show()
+        $(".user-nickname").text(localStorage.getItem('user_name'))
 
     }
  var uriIP = 'https://www.cloudflare.com/cdn-cgi/trace';
