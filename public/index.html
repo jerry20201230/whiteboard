@@ -267,9 +267,9 @@
     class="g-recaptcha"
     data-sitekey="6LcJwl4hAAAAADWzbkUuYV1CSFW0g6CMs9ZoVaaS"
     data-theme="dark" data-size="normal"
-    data-callback="verify"
-    data-expired-callback="expired"
-    data-error-callback="error">
+    data-callback="verifyCallback"
+    data-expired-callback="expiredCallback"
+    data-error-callback="errorCallback">
     </div>
    
 </div>
@@ -350,13 +350,13 @@
       }
       
       // 過期要做的事
-      function expired(ex) {
+      function expiredCallback(ex) {
         isRobot = -1
        // window.alert('reCAPTCHA 驗證程序到期')
       }
       
       // 失敗要做的事
-      function error(err) {
+      function errorCallback(err) {
         isRobot = 1
        // window.alert('reCAPTCHA 驗證失敗')
       }
