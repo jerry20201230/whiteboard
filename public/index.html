@@ -353,11 +353,20 @@ z-index: 1050;" hidden>
 <span id="infoText" >正在同步...</span>
   </div>
 
+  <div id="login-user-setting-page" hidden>
 
-<div id="login-page" hidden>
 
-    <center> <span style="margin-top: 45vh;"><h1>HI</h1></span></center>
+  </div>
+
+<div id="login-robot-verify-page" hidden>
+
+   <h1>Hi ~ 歡迎使用畫板</h1>
     
+   <div class="input-group mb-3">
+    <span class="input-group-text">輸入暱稱</span>
+    <input type="text" id="nickname-input-set" class="form-control" placeholder="確認房間密碼" aria-label="確認房間密碼" >
+
+</div>
 <div
 class="g-recaptcha"
 data-sitekey="6LcJwl4hAAAAADWzbkUuYV1CSFW0g6CMs9ZoVaaS"
@@ -367,13 +376,17 @@ data-expired-callback="expired"
 data-error-callback="error">
 </div>
 <script>
+    if(localStorage.getItem("logined?") == null ){
+
+
+    }
  var uriIP = 'https://www.cloudflare.com/cdn-cgi/trace';
       
       // GAS 部署為網路應用程式後取得的 URL
       var uriGAS = 'https://script.google.com/macros/s/AKfycbzl4lhlnlRV30ODAmuJzgcteMb4O7Wd1mvw0a_Bwu1_RTFpdXO4UFiDzRq3ngockVLd/exec';
       
       // 取 ip
-      var ip;
+      var myip,isRobot=-1;
       fetch(uriIP)
         .then(response => response.text())
         .then(result => {
@@ -381,7 +394,7 @@ data-error-callback="error">
           for(var i = 0, len = resultArr.length; i < len; i++)	{
             var tempArr = resultArr[i].split('=');
             if(tempArr[0] == 'ip') {
-              ip = tempArr[1];
+              myip = tempArr[1];
               break;
             }
           }
@@ -395,7 +408,7 @@ data-error-callback="error">
       
         var formData = new FormData();
         formData.append('token', token);
-        formData.append('ip', ip);
+        formData.append('ip', myip);
       
         fetch(uriGAS, {
           method: "POST",
@@ -403,24 +416,28 @@ data-error-callback="error">
         }).then(response => response.json())
           .then(result => {
             if(result.success) {
-              document.getElementById('verify').classList.remove('none');
+              isRobot = 0
             } else {
-              window.alert(result['error-codes'][0])
+              //window.alert(result['error-codes'][0])
+              isRobot = 1
             }
           })
           .catch(err => {
-            window.alert(err)
+            isRobot = -1
+            //window.alert(err)
           })
       }
       
       // 過期要做的事
       function expired(ex) {
-        window.alert('reCAPTCHA 驗證程序到期')
+        isRobot = -1
+       // window.alert('reCAPTCHA 驗證程序到期')
       }
       
       // 失敗要做的事
       function error(err) {
-        window.alert('reCAPTCHA 驗證失敗')
+        isRobot = 1
+       // window.alert('reCAPTCHA 驗證失敗')
       }
 </script>
    
