@@ -216,119 +216,6 @@
 
 <body>
 
-  <div class="collapse" id="navbarToggleExternalContent">
-    <div class="bg-dark p-4">
-        <div>
-
-            <div class="flex">
-                <div id="chat-tabs">
-
-
-                </div>
-                <div class="flex">
-                    <div>
-                        <div class="position-relative">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="width: 3em; height:3em; color:#fff"
-                                fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                                <path fill-rule="evenodd"
-                                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                            </svg>
-                            <span id="statue-circle"
-                                class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle">
-
-                            </span>
-                        </div>
-                    </div>
-
-
-                    <ul style="color: #fff; margin-left: 1em;">
-                        <li hidden>
-                            <form id="rename_nickname_farm" action="">
-                                暱稱:<input id="NMinput" placeholder="輸入暱稱..." value="User">
-                                <button id="changeNM" class="btn btn-outline-light">送出更改</button>
-                            </form>
-                        </li>
-                        <li>
-                            <h3 class="nickname"></h3>
-                            <div class="flex">
-                                <h6>@</h6>
-                                <h6 id="Sid" style="margin:0">---</h6>
-                            </div>
-                        </li>
-                        <li>
-                            <form id="reset_statue_farm" action="">
-                                狀態:
-                                <select id="statue_select" style="
-        background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
-        color: inherit;" onblur="
-        if(this.value.includes('statue_Green')){$('#statue-circle').attr('class','position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle')}
-        else if(this.value.includes('statue_Yellow')){$('#statue-circle').attr('class','position-absolute top-0 start-100 translate-middle p-2 bg-warning border border-light rounded-circle')}
-        else if(this.value.includes('statue_White')){$('#statue-circle').attr('class','position-absolute top-0 start-100 translate-middle p-2 bg-light border border-light rounded-circle')}
-        else if(this.value.includes('statue_Red')){$('#statue-circle').attr('class','position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle')}
-        else if(this.value.includes('statue_Blue')){$('#statue-circle').attr('class','position-absolute top-0 start-100 translate-middle p-2 bg-primary border border-light rounded-circle')}
-        ">
-                                    <option value="statue_Green:online">線上🟢</option>
-                                    <option value="statue_Yellow:leave">離開🟡</option>
-                                    <option value="statue_Red:busy">忙碌🔴</option>
-                                    <option value="statue_White:disconnect">離線⚪</option>
-                                </select>
-
-
-                            </form>
-
-                        </li>
-
-
-
-                        <li>連線狀態: &nbsp; <span id="connectStatue">未連線</span>
-                        </li>
-                        <li class="flex"><span>線上人數:&nbsp;</span><span class="onlinePeople">未知</span></li>
-                    </ul>
-
-
-                </div>
-
-            </div>
-
-            <div class="flex">
-                <button class="btn btn-outline-light"
-                    onclick="$('#getuser-connecting').show();socket.emit('GetUsers',{'room':MyRoom})"
-                    data-bs-toggle="modal" data-bs-target="#Modal-1">人員清單</button>
-
-                &nbsp;
-
-                <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#Modal-5" onclick='    $(".nickname").html(localStorage.getItem("myNickname"))
-    $(".Sid").html(localStorage.getItem("myID"))'>設定</button>
-
-  
-            </div>
-
-        </div>
-    </div>
-
-
-
-</div>
-
-<nav class="navbar navbar-dark bg-dark flex" style="position: sticky;
-width: 100%;
-top: 0;
-z-index: 1050;" hidden>
-
-    <div class="container-fluid" >
-        <h1 style="color:#fff">White Board</h1>
-        <button class="navbar-toggler" type="button" onclick="window.scrollTo(0,0)" data-bs-toggle="collapse"
-            data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-    </div>
-</nav>
-
-
-<p></p>
 
 <!--MAIN UI-->
   <div id="logined-ui" >
@@ -367,7 +254,7 @@ z-index: 1050;" hidden>
       </div>
     </div>
     <p>
-        <button class="btn btn-outline-primary" onclick="if($('#nickname-input-set').val()==''){$('#nickname-input-set').attr('class','form-control is-invalid')}else{$('#nickname-input-set').attr('class','form-control');$('#login-robot-verify-page').show();$('#login-user-setting-page').hide()}">> 下一步</button>
+        <button class="btn btn-outline-primary" onclick="if($('#nickname-input-set').val()==''){$('#nickname-input-set').attr('class','form-control is-invalid')}else{$('#nickname-input-set').attr('class','form-control');$('#login-robot-verify-page').show();$('#login-user-setting-page').hide();localStorage.setItem('user_name',$('#nickname-input-set').val());$('.user-nickname').text(localStorage.getItem('user_name'))}">> 下一步</button>
 
     </p>
 
@@ -407,6 +294,7 @@ z-index: 1050;" hidden>
     if(localStorage.getItem("logined?") == null ){
 
         $("#login-user-setting-page").show()
+        $("#logined-ui").hide()
 
     }else{
         $("#login-robot-verify-page").show()
