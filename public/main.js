@@ -52,8 +52,11 @@
   <p></p><span class=text-primary>建議作法:<br>
   <ul>
  
-  <li>畫布資訊可能有誤，請建立新畫布</li>
+  <li>畫布資訊可能有誤，請重新同步或建立新畫布</li>
+  
   </ul>
+  <p></p>
+  <button class="btn btn-primary" onclick="socket.emit('getData','p')">重新同步</button>
   </span>`)
   err = true
   break;
@@ -116,6 +119,8 @@
 
   function onMouseMove(e){
     if (!drawing) { return; }
+    current.x = e.clientX||e.touches[0].clientX;
+    current.y = e.clientY||e.touches[0].clientY;
     drawLine(current.x, current.y, e.clientX||e.touches[0].clientX, e.clientY||e.touches[0].clientY, current.color, true);
     current.x = e.clientX||e.touches[0].clientX;
     current.y = e.clientY||e.touches[0].clientY;
