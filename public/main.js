@@ -1,6 +1,6 @@
 
-const socket = io()
-(function() {
+
+
 //'use strict';
   var socket = io();
   var canvas = document.getElementsByClassName('whiteboard')[0];
@@ -59,6 +59,7 @@ const socket = io()
   <button class="btn btn-primary" onclick="socket.emit('getData','p');reload_ui()">重新同步</button>
   </span>`)
   err = true
+  $("#infoText").text("發生錯誤")
   break;
     }
   }
@@ -193,7 +194,7 @@ window.onfocus = function () {
     $("#whiteboard-loading").show()
     $("#infoText").text("正在同步...")
    }
-})();
+
 
 
 
