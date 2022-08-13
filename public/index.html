@@ -2,332 +2,340 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>白板 - 即時線上協作</title>
-  <link rel="stylesheet" href="style.css">
-  <link id="browser-icon" rel="shortcut icon" type="image/png" href="/icon/icon-white.png" />
+    <meta charset="UTF-8">
+    <title>白板 - 即時線上協作</title>
+    <link rel="stylesheet" href="style.css">
+    <link id="browser-icon" rel="shortcut icon" type="image/png" href="/icon/icon-white.png" />
 
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.css' integrity='sha512-h1rwF0uB6r2IuEZcyjPrR53bBKN9Wb4yL+w3Rdlzmc3CkBF1gMSFvQIIstnu4bEtYDaKca5ke5S8UBAACRImyg==' crossorigin='anonymous'/>
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.css' integrity='sha512-CaTMQoJ49k4vw9XO0VpTBpmMz8XpCWP5JhGmBvuBqCOaOHWENWO1CrVl09u4yp8yBVSID6smD4+gpzDJVQOPwQ==' crossorigin='anonymous'/>
-  
-  <style>
-    body {
-        margin: 8px;
-        padding-bottom: 3rem;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.css'
+        integrity='sha512-h1rwF0uB6r2IuEZcyjPrR53bBKN9Wb4yL+w3Rdlzmc3CkBF1gMSFvQIIstnu4bEtYDaKca5ke5S8UBAACRImyg=='
+        crossorigin='anonymous' />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.css'
+        integrity='sha512-CaTMQoJ49k4vw9XO0VpTBpmMz8XpCWP5JhGmBvuBqCOaOHWENWO1CrVl09u4yp8yBVSID6smD4+gpzDJVQOPwQ=='
+        crossorigin='anonymous' />
 
-    nav {
-        position: sticky;
-        width: 100%;
-        top: 0;
-    }
+    <style>
+        body {
+            margin: 8px;
+            padding-bottom: 3rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-    .bottom {
-        position: fixed;
-        bottom: 0;
+        nav {
+            position: sticky;
+            width: 100%;
+            top: 0;
+        }
 
-    }
+        .bottom {
+            position: fixed;
+            bottom: 0;
 
-    .bottom-bar {
-        background: rgba(0, 0, 0, 0.15);
-        padding: 0.25rem;
+        }
 
-        display: flex;
-        height: 3rem;
-        box-sizing: border-box;
-        backdrop-filter: blur(10px);
-    }
+        .bottom-bar {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0.25rem;
 
-    .input {
-        border: none;
-        padding: 0 1rem;
-        flex-grow: 1;
-        border-radius: 2rem;
-        margin: 0.25rem;
-    }
+            display: flex;
+            height: 3rem;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+        }
 
-    .input:focus {
-        outline: none;
-    }
+        .input {
+            border: none;
+            padding: 0 1rem;
+            flex-grow: 1;
+            border-radius: 2rem;
+            margin: 0.25rem;
+        }
 
-    .msg-form {
+        .input:focus {
+            outline: none;
+        }
 
-        display: flex;
-    }
+        .msg-form {
 
-    .messages,
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
+            display: flex;
+        }
 
-    .messages>li {
-        padding: 0.5rem 1rem;
-        border-bottom: 1px #333 solid;
-    }
+        .messages,
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
 
-
-    .statue-bar {
-        position: sticky;
-        top: 0px;
-        background-color: #fff;
+        .messages>li {
+            padding: 0.5rem 1rem;
+            border-bottom: 1px #333 solid;
+        }
 
 
-    }
-
-    .flex {
-        display: flex;
-    }
-
-    .warn {
-        background-color: #f4a3ab !important;
-    }
-
-    .success {
-        background-color: #98f9b1 !important;
-    }
-
-    .info {
-        background-color: #94e3ff !important;
-    }
+        .statue-bar {
+            position: sticky;
+            top: 0px;
+            background-color: #fff;
 
 
-    table,
-    td {
-        border: 1px solid #333;
-    }
+        }
 
-    thead,
-    tfoot {
-        background-color: #333;
-        color: #fff;
-    }
+        .flex {
+            display: flex;
+        }
 
-    .btn-file {
-        position: relative;
-        overflow: hidden;
-    }
+        .warn {
+            background-color: #f4a3ab !important;
+        }
 
-    .btn-file input[type=file] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        min-width: 100%;
-        min-height: 100%;
-        font-size: 100px;
-        text-align: right;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        outline: none;
-        background: white;
-        cursor: inherit;
-        display: block;
-    }
+        .success {
+            background-color: #98f9b1 !important;
+        }
+
+        .info {
+            background-color: #94e3ff !important;
+        }
 
 
-    .text {
-        border: 1px #333 solid;
-        border-radius: 5px;
-        max-height: 50vh;
-        /*   max-width: 30vw;*/
-    }
+        table,
+        td {
+            border: 1px solid #333;
+        }
 
-    .badge>h6 {
-        margin: 0;
-    }
+        thead,
+        tfoot {
+            background-color: #333;
+            color: #fff;
+        }
 
-    .radio input[type="radio"] {
-        display: none;
-    }
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
 
-    .checkbox input[type="checkbox"] {
-        display: none;
-    }
-
-    .radio input:checked+.button {
-        background: #3296d4;
-        color: #fff;
-        cursor: default;
-    }
-
-    .checkbox input:checked+.button {
-        background: #3296d4;
-        color: #fff;
-        cursor: pointer;
-
-    }
-
-    .radio .button,
-    .checkbox .button {
-        display: inline-block;
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
 
 
-        margin: 0 0.5vw 0.5vw 0;
-        padding: 0.25vw 0.5vw;
-        background: #f7f7f7;
-        color: #333;
-        cursor: pointer;
-        border: 1px solid #8b8b8b;
-        transition: background-color 0.3s, color 0.3s;
-    }
+        .text {
+            border: 1px #333 solid;
+            border-radius: 5px;
+            max-height: 50vh;
+            /*   max-width: 30vw;*/
+        }
 
-    .radio .button:hover,
-    .checkbox .button:hover {
-        background-color: #bbb;
-        color: #fff;
-    }
+        .badge>h6 {
+            margin: 0;
+        }
 
-    .radio .round,
-    .checkbox .round {
-        border-radius: 5px;
-    }
+        .radio input[type="radio"] {
+            display: none;
+        }
 
-    .tab-content {
-        flex-grow: 1;
-        padding-top: 5px;
-    }
+        .checkbox input[type="checkbox"] {
+            display: none;
+        }
 
-    #v-pills-tab {
-        position: sticky !important;
-        padding-top: 5px;
+        .radio input:checked+.button {
+            background: #3296d4;
+            color: #fff;
+            cursor: default;
+        }
 
-        overflow-x: hidden;
-        flex-wrap: nowrap;
+        .checkbox input:checked+.button {
+            background: #3296d4;
+            color: #fff;
+            cursor: pointer;
+
+        }
+
+        .radio .button,
+        .checkbox .button {
+            display: inline-block;
 
 
-        overflow-y: scroll !important;
-        max-height: 80vh;
+            margin: 0 0.5vw 0.5vw 0;
+            padding: 0.25vw 0.5vw;
+            background: #f7f7f7;
+            color: #333;
+            cursor: pointer;
+            border: 1px solid #8b8b8b;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-    }
+        .radio .button:hover,
+        .checkbox .button:hover {
+            background-color: #bbb;
+            color: #fff;
+        }
 
-    #v-pills-tab .nav-link {
-        white-space: nowrap;
-    }
+        .radio .round,
+        .checkbox .round {
+            border-radius: 5px;
+        }
 
-    #toast {
-        z-index: 20000 !important;
-    }
-</style>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        .tab-content {
+            flex-grow: 1;
+            padding-top: 5px;
+        }
+
+        #v-pills-tab {
+            position: sticky !important;
+            padding-top: 5px;
+
+            overflow-x: hidden;
+            flex-wrap: nowrap;
+
+
+            overflow-y: scroll !important;
+            max-height: 80vh;
+
+        }
+
+        #v-pills-tab .nav-link {
+            white-space: nowrap;
+        }
+
+        #toast {
+            z-index: 20000 !important;
+        }
+    </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 </head>
 
 <body>
 
 
-<!--MAIN UI-->
-  <div id="logined-ui" >
+    <!--MAIN UI-->
+    <div id="logined-ui">
 
 
-    <center>
-    <canvas class="whiteboard" style="border: 1px #000 solid; display: none;cursor: url(/icon/cursor.cur),default;"></canvas>
-    <div id="whiteboard-loading" style="padding: 10%; border: 1px #000 solid;">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">正在同步資料...</span>
-          </div>
-          <p></p>
-        <span>正在同步資料...</span>
+        <center>
+            <canvas class="whiteboard"
+                style="border: 1px #000 solid; display: none;cursor: url(/icon/cursor.cur),default;"></canvas>
+            <div id="whiteboard-loading" style="padding: 10%; border: 1px #000 solid;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">正在同步資料...</span>
+                </div>
+                <p></p>
+                <span>正在同步資料...</span>
+            </div>
+        </center>
+        <p></p>
+        <div class="flex">
+            <input type="text" id="color-picker" value="#000000FF"
+                data-jscolor="{closeButton:true, closeText:'關閉',backgroundColor:'#000', buttonColor:'#fff'}">
+
+        </div>
+        <span id="infoText">正在同步...</span>
     </div>
-    </center>
-    <p></p>
-    <div class="flex">
-      <input type="text" id="color-picker" value="#000000FF"
-        data-jscolor="{closeButton:true, closeText:'關閉',backgroundColor:'#000', buttonColor:'#fff'}">
+
+    <div id="login-user-setting-page" style="display: none;">
+        <h1>Hi ~ 歡迎使用畫板</h1>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">輸入暱稱</span>
+            <input type="text" id="nickname-input-set"
+                onblur="if($(this).val()==''){$(this).attr('class','form-control is-invalid')}else{$(this).attr('class','form-control')}"
+                class="form-control" placeholder="輸入暱稱" aria-label="輸入暱稱">
+
+            <div class="invalid-feedback">
+                請輸入暱稱
+            </div>
+        </div>
+        <p>
+            <button class="btn btn-outline-primary"
+                onclick="if($('#nickname-input-set').val()==''){$('#nickname-input-set').attr('class','form-control is-invalid')}else{$('#nickname-input-set').attr('class','form-control');$('#login-robot-verify-page').show();$('#login-user-setting-page').hide();localStorage.setItem('user_name',$('#nickname-input-set').val());$('.user-nickname').text(localStorage.getItem('user_name'))}">>
+                下一步</button>
+
+        </p>
+
+    </div>
+
+    <div id="login-robot-verify-page" style="display: none;">
+        <h1>Hi ~ <span class="user-nickname"></span></h1>
+        <p>請勾選核取方塊以完成認證</p>
+        <div>
+        <div class="g-recaptcha" data-sitekey="6LcJwl4hAAAAADWzbkUuYV1CSFW0g6CMs9ZoVaaS" data-theme="dark"
+            data-size="normal" data-callback="verifyCallback" data-expired-callback="expiredCallback"
+            data-error-callback="errorCallback">
+           顯示reCAPTCHA時發生錯誤
+        </div>
         
+        </div>
+
     </div>
-<span id="infoText" >正在同步...</span>
-  </div>
 
-  <div id="login-user-setting-page" style="display: none;">
-<h1>Hi ~ 歡迎使用畫板</h1>
-    
-   <div class="input-group mb-3">
-    <span class="input-group-text">輸入暱稱</span>
-    <input type="text" id="nickname-input-set"
-    onblur="if($(this).val()==''){$(this).attr('class','form-control is-invalid')}else{$(this).attr('class','form-control')}"
-    class="form-control" placeholder="輸入暱稱" aria-label="輸入暱稱" >
 
-    <div class="invalid-feedback">
-       請輸入暱稱
-      </div>
+
     </div>
-    <p>
-        <button class="btn btn-outline-primary" onclick="if($('#nickname-input-set').val()==''){$('#nickname-input-set').attr('class','form-control is-invalid')}else{$('#nickname-input-set').attr('class','form-control');$('#login-robot-verify-page').show();$('#login-user-setting-page').hide();localStorage.setItem('user_name',$('#nickname-input-set').val());$('.user-nickname').text(localStorage.getItem('user_name'))}">> 下一步</button>
-
-    </p>
-
-  </div>
-
-<div id="login-robot-verify-page" style="display: none;">
-   <h1>Hi ~ <span class="user-nickname"></span></h1>
-    <p>請勾選核取方塊以完成認證</p>
-    <div
-    class="g-recaptcha"
-    data-sitekey="6LcJwl4hAAAAADWzbkUuYV1CSFW0g6CMs9ZoVaaS"
-    data-theme="dark" data-size="normal"
-    data-callback="verifyCallback"
-    data-expired-callback="expiredCallback"
-    data-error-callback="errorCallback">
-    顯示reCAPTCHA時發生錯誤
-    </div>
-   
-</div>
-
-
-   
-</div>
 
 
 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.js' integrity='sha512-39Q5Yw4jtWPVkYu5Dry3HiRh6DWG4FDODb/rHF+X2Xp0kzhg9VgTyYV209uQ/EsqPDP/4dDvwm1rb8JgnAkHNg==' crossorigin='anonymous'></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.8/jscolor.js'
-    integrity='sha512-mtiG+kTbrG6RDYwzcVr6S3kIhSsdAkuft9To1ILQklUSoiBRysnRoqEz6qdJPgLz1ecmndQmTITjCi9jmjRe6w=='
-    crossorigin='anonymous'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js'
-    integrity='sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=='
-    crossorigin='anonymous'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.js'
+        integrity='sha512-39Q5Yw4jtWPVkYu5Dry3HiRh6DWG4FDODb/rHF+X2Xp0kzhg9VgTyYV209uQ/EsqPDP/4dDvwm1rb8JgnAkHNg=='
+        crossorigin='anonymous'></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.8/jscolor.js'
+        integrity='sha512-mtiG+kTbrG6RDYwzcVr6S3kIhSsdAkuft9To1ILQklUSoiBRysnRoqEz6qdJPgLz1ecmndQmTITjCi9jmjRe6w=='
+        crossorigin='anonymous'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js'
+        integrity='sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=='
+        crossorigin='anonymous'></script>
 
-  <script src="/main.js"></script>
-  <script>
-    if(localStorage.getItem("logined?") == null ){
+    <script src="/main.js"></script>
+    <script>
+        if (localStorage.getItem("logined?") == null) {
 
-        $("#login-user-setting-page").show()
-        $("#logined-ui").hide()
+            $("#login-user-setting-page").show()
+            $("#logined-ui").hide()
 
-    }else{
-        $("#login-robot-verify-page").show()
-        $(".user-nickname").text(localStorage.getItem('user_name'))
-        $("#logined-ui").hide()
+        } else {
+            $("#login-robot-verify-page").show()
+            $(".user-nickname").text(localStorage.getItem('user_name'))
+            $("#logined-ui").hide()
 
-    }
- var isRobot = -1
-      function verifyCallback(token) {
-    
-          isRobot = 0
-          console.log("recaptcha success worked!")
-          $("#login-robot-verify-page").hide()
-          delay(1,` $("#logined-ui").show()`)
-         
-          
-       localStorage.setItem("logined?","true")
+        }
+        var isRobot = -1
+        function verifyCallback(token) {
 
-      }
-      
-      // 過期要做的事
-      function expiredCallback(ex) {
-        isRobot = -1
-       // window.alert('reCAPTCHA 驗證程序到期')
-      }
-      
-      // 失敗要做的事
-      function errorCallback(err) {
-        isRobot = 1
-       // window.alert('reCAPTCHA 驗證失敗')
-      }
-</script>
+            isRobot = 0
+            console.log("recaptcha success worked!")
+            $("#login-robot-verify-page").hide()
+            delay(1, ` $("#logined-ui").show()`)
+
+
+            localStorage.setItem("logined?", "true")
+
+        }
+
+        // 過期要做的事
+        function expiredCallback(ex) {
+            isRobot = -1
+            // window.alert('reCAPTCHA 驗證程序到期')
+        }
+
+        // 失敗要做的事
+        function errorCallback(err) {
+            isRobot = 1
+            // window.alert('reCAPTCHA 驗證失敗')
+        }
+    </script>
 </body>
 
 </html>
