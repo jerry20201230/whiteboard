@@ -222,7 +222,7 @@
 
 
     <center>
-    <canvas class="whiteboard" style="border: 1px #000 solid; display: none;cursor: crosshair;"></canvas>
+    <canvas class="whiteboard" style="border: 1px #000 solid; display: none;cursor: url(/icon/cursor.cur),default;"></canvas>
     <div id="whiteboard-loading" style="padding: 10%; border: 1px #000 solid;">
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">正在同步資料...</span>
@@ -261,8 +261,8 @@
   </div>
 
 <div id="login-robot-verify-page" style="display: none;">
-   <h1><span class="user-nickname"></span> ，請勾選核取方塊以完成認證</h1>
-    <p></p>
+   <h1>Hi ~ <span class="user-nickname"></span></h1>
+    <p>請勾選核取方塊以完成認證</p>
     <div
     class="g-recaptcha"
     data-sitekey="6LcJwl4hAAAAADWzbkUuYV1CSFW0g6CMs9ZoVaaS"
@@ -270,6 +270,7 @@
     data-callback="verifyCallback"
     data-expired-callback="expiredCallback"
     data-error-callback="errorCallback">
+    顯示reCAPTCHA時發生錯誤
     </div>
    
 </div>
