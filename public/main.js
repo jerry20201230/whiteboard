@@ -146,6 +146,11 @@ $("#color-picker").on("blur",function(){
     canvas.height = window.innerHeight -150;
     $("#whiteboard-loading").css("width",window.innerWidth -50)
     $("#whiteboard-loading").css("height",window.innerHeight -150)
+    $("#whiteboard-loading").html(`        <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">正在同步資料...</span>
+  </div>
+  <p></p>
+<span>正在同步資料...</span>`)
     $("#whiteboard-loading").show()
     $(".whiteboard").hide()
     socket.emit('getData','p')
