@@ -21,6 +21,7 @@ var y0 = []
 var x1 = []
 var y1 = []
 var color = []
+var action = []
 
 
 function onConnection(socket){
@@ -31,13 +32,16 @@ function onConnection(socket){
     x1.push(data.x1)
     y1.push(data.y1)
     color.push(data.color)
+    action.push(data.action)
+    console.log("[POST] data")
 
 })
 
 socket.on("getData",function(){
-  console.log("data")
+
   
-  io.to(socket.id).emit("getData",{'x0':x0,'y0':y0,'x1':x1,'y1':y1,'color':color})
+  io.to(socket.id).emit("getData",{'x0':x0,'y0':y0,'x1':x1,'y1':y1,'color':color,'action':action})
+  console.log("[GET] data")
 })
 }
 

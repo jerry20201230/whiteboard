@@ -32,17 +32,42 @@
   socket.on('drawing', onDrawingEvent);
   socket.on('getData',(data)=>{
 
+    var err = false
     for(let i=0;i<data.x1.length;i++){
   
       var w = canvas.width;
       var h = canvas.height;
+      if(data.action[i] == "line"){
 
       drawLine(data.x0[i] * w, data.y0[i] * h, data.x1[i] * w, data.y1[i] * h, data.color[i]);
+    }else{
+      $("#whiteboard-loading").html(`        
+      <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="text-danger bi bi-x-circle-fill" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+    </svg>
+    <p></p>
+  <span class=text-danger >同步資料失敗</span>
+  <p></p>
+  <span class=text-danger>錯誤碼: Unknow Action: ${data.action[i]}</span>
+  <p></p><span class=text-primary>建議作法:<br>
+  <ul>
+  <li>伺服器可能暫時忙碌中，請稍等一會兒</li>
+  <li>畫布資訊可能有誤，請建立新畫布</li>
+  </ul>
+  </span>`)
+  err = true
+  break;
     }
+  }
+  if(!err){
     $("#infoText").text("就緒")
    
     $("#whiteboard-loading").hide()
  $(".whiteboard").show()
+  }else{
+    $("#infoText").text("發生錯誤")
+    
+  }
   })
 
   window.addEventListener('resize', onResize, false);
@@ -50,9 +75,11 @@
 
 
   function drawLine(x0, y0, x1, y1, color, emit){
+    context.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
+    context.lineCap = 'round';  // 筆觸預設為 "圓形"
     context.beginPath();
     context.moveTo(x0, y0);
-    context.lineTo(x1, y1);
+    context.quadraticCurveTo(x0, y0,x1, y1);
     context.strokeStyle = color;
     context.lineWidth = 2;
     context.stroke();
@@ -67,7 +94,8 @@
       y0: y0 / h,
       x1: x1 / w,
       y1: y1 / h,
-      color: color
+      color: color,
+      action:"line"
     });
   }
 

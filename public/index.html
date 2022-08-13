@@ -222,7 +222,7 @@
 
 
     <center>
-    <canvas class="whiteboard" style="border: 1px #000 solid; display: none;"></canvas>
+    <canvas class="whiteboard" style="border: 1px #000 solid; display: none;cursor: crosshair;"></canvas>
     <div id="whiteboard-loading" style="padding: 10%; border: 1px #000 solid;">
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">正在同步資料...</span>
@@ -306,6 +306,9 @@
     
           isRobot = 0
           console.log("recaptcha success worked!")
+          $("#login-robot-verify-page").hide()
+          $("#logined-ui").show()
+       localStorage.setItem("logined?","true")
 
       }
       
