@@ -79,7 +79,8 @@
     context.lineCap = 'round';  // 筆觸預設為 "圓形"
     context.beginPath();
     context.moveTo(x0, y0);
-    context.lineTo(current.x, current.y);
+    context.lineTo(x1, y1);
+    context.lineTo(current.x,current.y)
     context.strokeStyle = color;
     context.lineWidth = 2;
     context.stroke();
