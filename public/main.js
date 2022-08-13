@@ -1,7 +1,7 @@
-'use strict';
-socket = io()
-(function() {
 
+const socket = io()
+(function() {
+//'use strict';
   var socket = io();
   var canvas = document.getElementsByClassName('whiteboard')[0];
   //var colors = document.getElementsByClassName('color');
