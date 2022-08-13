@@ -214,7 +214,7 @@
             z-index: 20000 !important;
         }
     </style>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 
 </head>
 
@@ -271,12 +271,25 @@
         <h1>Hi ~ <span class="user-nickname"></span></h1>
         <p>請勾選核取方塊以完成認證</p>
         <div>
-        <div class="g-recaptcha" data-sitekey="6LcJwl4hAAAAADWzbkUuYV1CSFW0g6CMs9ZoVaaS" data-theme="dark"
-            data-size="normal" data-callback="verifyCallback" data-expired-callback="expiredCallback"
-            data-error-callback="errorCallback">
-           顯示reCAPTCHA時發生錯誤
-        </div>
-        
+     <script src="https://www.google.com/recaptcha/api.js" async defer>
+            </script>
+            <div class="g-recaptcha" data-sitekey="6LcJwl4hAAAAADWzbkUuYV1CSFW0g6CMs9ZoVaaS" data-theme="dark"
+                data-size="normal" data-callback="verifyCallback" data-expired-callback="expiredCallback"
+                data-error-callback="errorCallback">
+               
+            </div>
+ <div class="alert alert-warning flex" id="recaptcha-placeholder" style="width: 50%;" hidden>
+                    <div>
+                        <h1>:( </h1>
+                    </div>
+                    <div>&nbsp;&nbsp;</div>
+                    <div>
+                        顯示reCAPTCHA時發生錯誤
+                        <br>
+                        請檢查網路狀況，再試一次
+                    </div>
+                </div>
+       
         </div>
 
     </div>
@@ -335,6 +348,7 @@
             isRobot = 1
             // window.alert('reCAPTCHA 驗證失敗')
         }
+
     </script>
 </body>
 

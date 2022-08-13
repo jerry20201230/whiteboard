@@ -56,7 +56,7 @@
   
   </ul>
   <p></p>
-  <button class="btn btn-primary" onclick="socket.emit('getData','p')">重新同步</button>
+  <button class="btn btn-primary" onclick="socket.emit('getData','p');reload_ui()">重新同步</button>
   </span>`)
   err = true
   break;
@@ -76,6 +76,17 @@
   window.addEventListener('resize', onResize, false);
   onResize();
 
+  function reload_ui(){
+    $("#whiteboard-loading").html(`        <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">正在同步資料...</span>
+  </div>
+  <p></p>
+<span>正在同步資料...</span>`)
+    $("#whiteboard-loading").show()
+    $(".whiteboard").hide()
+
+    $("#infoText").text("正在同步...")
+  }
 
   function drawLine(x0, y0, x1, y1, color, emit){
     context.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
