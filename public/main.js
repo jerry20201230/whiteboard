@@ -48,10 +48,10 @@
     <p></p>
   <span class=text-danger >同步資料失敗</span>
   <p></p>
-  <span class=text-danger>錯誤碼: Unknow Action: ${data.action[i]}</span>
+  <span class=text-danger>錯誤碼:unknow Action: ${data.action[i]}</span>
   <p></p><span class=text-primary>建議作法:<br>
   <ul>
-  <li>伺服器可能暫時忙碌中，請稍等一會兒</li>
+ 
   <li>畫布資訊可能有誤，請建立新畫布</li>
   </ul>
   </span>`)
@@ -79,7 +79,7 @@
     context.lineCap = 'round';  // 筆觸預設為 "圓形"
     context.beginPath();
     context.moveTo(x0, y0);
-    context.quadraticCurveTo(x0, y0,x1, y1);
+    context.lineTo(current.x, current.y);
     context.strokeStyle = color;
     context.lineWidth = 2;
     context.stroke();
