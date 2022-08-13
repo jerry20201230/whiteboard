@@ -178,3 +178,15 @@ window.onfocus = function () {
 })();
 
 
+
+
+function anysc_delay(n) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, n * 1000);
+  });
+}
+
+async function delay(n,callback) {
+  await anysc_delay(n);
+  eval(callback)
+}
