@@ -48,7 +48,7 @@
     <p></p>
   <span class=text-danger >同步資料失敗</span>
   <p></p>
-  <span class=text-danger>錯誤碼:unknow Action: ${data.action[i]}</span>
+  <span class=text-danger>錯誤碼:Unknow action: ${data.action[i]} (at data-action :${i}:1)</span>
   <p></p><span class=text-primary>建議作法:<br>
   <ul>
  
@@ -91,13 +91,16 @@
 
   function drawLine(x0, y0, x1, y1, color, emit){
     context.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
-    context.lineCap = 'round';  // 筆觸預設為 "圓形"
-    context.beginPath();
-    context.moveTo(x0, y0);
-    context.lineTo(x1, y1);
-
+    context.lineCap = 'round';  // 筆觸預設為 "圓形"    
     context.strokeStyle = color;
     context.lineWidth = 2;
+    context.beginPath();
+    context.moveTo(x0, y0);
+
+    context.stroke();
+    context.lineTo(x1, y1);
+
+
     context.stroke();
   //  context.closePath();
 
@@ -106,10 +109,10 @@
     var h = canvas.height;
 
     socket.emit('drawing', {
-      x0: x0 / w,
-      y0: y0 / h,
-      x1: x1 / w,
-      y1: y1 / h,
+      x0: x0 / w ,
+      y0: y0 / h ,
+      x1: x1 / w ,
+      y1: y1 / h ,
       color: color,
       action:"line"
     });
@@ -132,6 +135,9 @@
   function onMouseMove(e){
     if (!drawing) { return; }
 
+    drawLine(current.x, current.y, e.clientX||e.touches[0].clientX, e.clientY||e.touches[0].clientY, current.color, true);
+    current.x = e.clientX||e.touches[0].clientX;
+    current.y = e.clientY||e.touches[0].clientY;
     drawLine(current.x, current.y, e.clientX||e.touches[0].clientX, e.clientY||e.touches[0].clientY, current.color, true);
     current.x = e.clientX||e.touches[0].clientX;
     current.y = e.clientY||e.touches[0].clientY;

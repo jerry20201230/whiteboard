@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+
+<head>
+  <!--
+bootscrap:5.0
+jquery:1.8.2
+jscolor:2.4.6
+  -->
+  <title>白板 - 即時線上協作</title>
+  <link href="" rel="shortcut icon" />
+  <meta charset="utf-8">
+  <link id="browser-icon" rel="shortcut icon" type="image/png" href="/icon/icon-white.png" />
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js'
+  integrity='sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=='
+  crossorigin='anonymous'></script>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/css/bootstrap.css'
+  integrity='sha512-h1rwF0uB6r2IuEZcyjPrR53bBKN9Wb4yL+w3Rdlzmc3CkBF1gMSFvQIIstnu4bEtYDaKca5ke5S8UBAACRImyg=='
+  crossorigin='anonymous' />
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.css'
+  integrity='sha512-CaTMQoJ49k4vw9XO0VpTBpmMz8XpCWP5JhGmBvuBqCOaOHWENWO1CrVl09u4yp8yBVSID6smD4+gpzDJVQOPwQ=='
+  crossorigin='anonymous' />
+  
+
+
+
+  <link rel="stylesheet" href="/public/style.css">
+  <style>
+            body {
+            margin: 8px;
+            padding-bottom: 3rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      border-radius: 2px;
+      width: 200px;
+      height: 3px;
+      /*background-image:-webkit-linear-gradient(left ,#f22 0%,#f22 50%,#fff 50%, #fff 100%);
+       */
+      box-shadow: inset rgb(125, 208, 233) 0 0 5px;
+      outline: none;
+      transition: .1s;
+    }
+
+    input[type="range"]:not([disabled])::-webkit-slider-thumb {
+      -webkit-appearance: none;
+
+      width: 10px;
+      height: 10px;
+      background: var(--bs-primary);
+      border-radius: 50%;
+      transition: .1s;
+
+    }
+
+    input[type="range"][disabled]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+
+      width: 10px;
+      height: 10px;
+      background-color: rgb(82, 82, 82);
+      border-radius: 50%;
+      transition: .1s;
+
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover,
+    input[type="range"]::-webkit-slider-thumb:active {
+      width: 16px;
+      height: 16px;
+    }
+
+
+
+    .box,
+    *[box] {
+      border: 1px solid #333333;
+    }
+
+    #menu {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100px;
+      z-index: 9999 !important;
+      background-color: rgb(255, 255, 255);
+      display: none;
+      border-radius: 5px;
+      border: rgb(26, 26, 26) 1px solid;
+      /*  box-shadow: #525252 0px 15px 12px 0px;
+*/
+    }
+
+    .menu-item {
+      border-bottom: 1px solid #000;
+      user-select: none;
+
+
+
+    }
+
+    .menu-item-last {
+      border: none;
+
+    }
+
+    .menu-item:hover {
+      background-color: rgb(141, 141, 141);
+      color: #f7f7f7;
+
+    }
+
+    .menu-item>input:hover {
+      box-shadow: none;
+    }
+
+    .menu-item-hidden {
+      display: none;
+    }
+
+
+    input[type=text],
+    input[type=number],
+    input[data-jscolor],
+    select {
+      border-radius: 5px;
+      border: 1px solid #ccc;
+
+    }
+
+    .menu-item-no-hover:hover {
+      background-color: rgb(255, 255, 255);
+
+    }
+
+    .jscolor-picker>*,
+    .jscolor-picker>*:not(.jscolor-palette-sample)>*:not(.jscolor-palette-sample) {
+      border-radius: 5px !important;
+
+
+    }
+
+    .helper>* {
+      display: inline-block;
+
+    }
+
+    .active {
+      background-color: #a0e1ff !important;
+
+      border-radius: 5px;
+    }
+
+    .tab-content>* {
+      min-height: 3vw;
+    }
+
+    body {
+      transition: background-color 3s;
+    }
+
+    #loading {
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--bs-primary);
+      float: right;
+      top: 0;
+      right: 0;
+      position: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s;
+      z-index: 99999;
+    }
+
+    .btn-file {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-file input[type=file] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      font-size: 100px;
+      text-align: right;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      outline: none;
+      background: white;
+      cursor: inherit;
+      display: block;
+    }
+  </style>
+
+
+
+
+  <script>
+    $(function () {
+      var r = $('#pen')
+      r.on('mouseenter', function () {
+        var p = r.val();
+        r.on('click', function () {
+          p = r.val();
+          bg(p);
+        });
+        r.on('mousemove', function () {
+          p = r.val();
+          bg(p);
+        });
+        r.on('input', function () {
+          p = r.val();
+          bg(p);
+        });
+      });
+      function bg(n) {
+        r.css({
+          'background-image': '-webkit-linear-gradient(left ,#3300FFFF 0%,#3300FFFF ' + n + '%,#fff ' + n + '%, #fff 100%)'
+        });
+      }
+    });
+    $(function () {
+      var f = $('#font')
+      f.on('mouseenter', function () {
+        var k = f.val();
+        f.on('click', function () {
+          k = f.val();
+          fbg(k);
+        });
+        f.on('mousemove', function () {
+          k = f.val();
+          fbg(k);
+        });
+        f.on('input', function () {
+          k = f.val();
+          fbg(k);
+        });
+      });
+      function fbg(n) {
+        f.css({
+          'background-image': '-webkit-linear-gradient(left ,#3300FFFF 0%,#3300FFFF ' + n + '%,#fff ' + n + '%, #fff 100%)'
+        });
+      }
+    });
+
+
+  </script>
+</head>
+
+<body style=" margin: 8px; max-width: 100vw; max-height: 100vw; user-select: none;" class="animate__animated ">
+  <div id="loading">
+
+    <img src="/icon/icon-white.png" style="max-width: 15vw; "><br>
+
+  </div>
+
+
+  <div id="menu">
+
+    <div class="menu-item" onclick="location.reload()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise"
+        viewBox="0 0 16 16" style="visibility: visible;">
+        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"></path>
+        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z">
+        </path>
+      </svg>
+      重新載入
+    </div>
+    <div class="menu-item menu-item-last" data-bs-toggle="modal" data-bs-target="#exampleModal-2"
+      onclick="document.getElementById('preview').setAttribute('src',canvas.toDataURL());document.getElementById('download').href=canvas.toDataURL()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download"
+        viewBox="0 0 16 16">
+        <path
+          d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+        <path
+          d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+      </svg>
+      下載圖片
+
+    </div>
+
+  </div>
+  <script type="text/javascript">
+    var menu = document.getElementById("menu");
+
+
+
+    document.oncontextmenu = function (e) {
+      var e = e || window.event;
+      //滑鼠點的座標
+      var oX = e.clientX;
+      var oY = e.clientY;
+      //選單出現後的位置
+      menu.style.display = "block";
+      menu.style.left = oX + "px";
+      menu.style.top = oY + "px";
+      //阻止瀏覽器預設事件
+      return false;//一般點選右鍵會出現瀏覽器預設的右鍵選單，寫了這句程式碼就可以阻止該預設事件。
+    }
+
+
+
+    document.onclick = function (e) {
+      var e = e || window.event;
+      menu.style.display = "none"
+    }
+    menu.onclick = function (e) {
+      var e = e || window.event;
+      e.cancelBubble = true;
+    }
+// document.addEventListener("contextmenu",function(e){
+// var e = e || window.event;
+// e.preventDefault();
+// alert("menu");
+// },false)
+  </script>
+  <noscript>
+    <div class="alert alert-danger" role="alert">
+      此程式需要JavaScript才能正確執行，請先開啟JavaScript!
+    </div>
+    <style>
+      nav,
+      button,
+      input,
+      .tab-content {
+        display: none;
+      }
+    </style>
+  </noscript>
+  
+
+  <center>
+    <canvas id="canvas" style="border: 1px solid #00b409; border-radius: 5px;">
+
+      你可能關閉了JavaScript，或者你的瀏覽器不支援我們使用的技術
+    </canvas>
+
+
+    <div id="whiteboard-loading" style="padding: 10%; border: 1px #000 solid; border-radius: 5px;">
+      <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">正在同步資料...</span>
+      </div>
+      <p></p>
+      <span>正在同步資料...</span>
+  </div>
+  </center>
+
+  <div>
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active draw-dis" id="nav-1-tab" data-bs-toggle="tab" data-bs-target="#nav-1"
+          type="button" role="tab" aria-controls="nav-1" aria-selected="true">
+          畫筆
+          <div style="display: inline-block;  background-color: #ff0000ff; border-radius: 5px; width: 1em; height: 1em;"
+            box id="color-viewer">
+          </div><br>
+          <div class="">
+            <progress id="pen-prog" max="100" value="1" class="progress-bar progress " role="progressbar"
+              style="max-height: 0.3em; max-width: 5em;"></progress>
+          </div>
+        </button>
+        <!-- <button class="nav-link draw-dis" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-2" type="button"
+          role="tab" aria-controls="nav-2" aria-selected="false">筆刷大小 :
+
+          <span class="pen-val">
+            1
+          </span>
+
+
+        </button>-->
+        <button class="nav-link draw-dis position-relative" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-3"
+          type="button" role="tab" aria-controls="nav-3" aria-selected="false">
+
+          繪製文字
+          <span id="drawtxt-active" class="position-absolute top-0 start-100 translate-middle 
+        p-2 bg-primary border border-light rounded-circle  " style="z-index: 199; transition: display 1s;">
+            <span class="visually-hidden">正在使用</span>
+          </span>
+        </button>
+        <button class="nav-link draw-dis" id="nav-7-tab" data-bs-toggle="tab" data-bs-target="#nav-7" type="button"
+          role="tab" aria-controls="nav-7" aria-selected="false">畫布</button>
+
+        <button class="nav-link draw-dis position-relative" id="nav-8-tab" data-bs-toggle="tab" data-bs-target="#nav-8"
+          type="button" role="tab" aria-controls="nav-8" aria-selected="false">上傳圖片
+
+          <span id="drawimg-active" class="position-absolute top-0 start-100 translate-middle 
+        p-2 bg-primary border border-light rounded-circle  " style="z-index: 199; transition: display 1s;">
+            <span class="visually-hidden">正在使用</span>
+          </span>
+        </button>
+
+        <button class="nav-link draw-dis" id="nav-4-tab" data-bs-toggle="tab" data-bs-target="#nav-4" type="button"
+          role="tab" aria-controls="nav-4" aria-selected="false">清除筆跡</button>
+
+        <button class="nav-link" id="nav-5-tab" data-bs-toggle="tab" data-bs-target="#nav-5" type="button" role="tab"
+          aria-controls="nav-5" aria-selected="false">設定</button>
+
+        <button class="nav-link no-dark" id="nav-6-tab" data-bs-toggle="tab" data-bs-target="#nav-6" type="button"
+          role="tab" aria-controls="nav-6" aria-selected="false">下載</button>
+      </div>
+    </nav>
+
+
+    <div class="tab-content" id="nav-tabContent" style="width: 100%;">
+      <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab">
+        顏色:
+        <input class="form-control form" placeholder="顏色選擇"
+          data-jscolor="{palette: '#000000 #7d7d7d #870014 #ec1c23 #ff7e26 #fef100 #22b14b #00a1e7 #3f47cc #a349a4 #ffffff #c3c3c3 #b87957 #feaec9 #ffc80d #eee3af #b5e61d #99d9ea #7092be #c8bfe7',closeButton:true, closeText:'關閉',backgroundColor:'#fff', buttonColor:'#000'}"
+          value="ff0000ff" id="color" style="width: 150px !important; display: inline-block;" oninput="        
+       $('#color-viewer').css({
+        'background-color': $(this).val()
+        });">
+        &nbsp;
+        筆刷大小
+        <input type="range" max="100" min="1" step="1" value="1" id="pen"
+          oninput="$('.pen-val').html($('#pen').val());document.getElementById('pen-prog').removeAttribute('value');document.getElementById('pen-prog').setAttribute('value',$(this).val())"
+          onfocus="$('.pen-val').html($('#pen').val());document.getElementById('pen-prog').removeAttribute('value');document.getElementById('pen-prog').setAttribute('value',$(this).val())"
+          style="display: inline-block;"><span class="pen-val">1</span>
+        <div class="helper"></div>
+ 
+      </div>
+      <!-- <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
+        <input type="range" max="100" min="1" step="1" value="1" id="pen" oninput="$('.pen-val').html($('#pen').val())"
+          onfocus="$('.pen-val').html($('#pen').val())"><span class="pen-val">1</span>
+        <div class="helper"></div>
+      </div>-->
+      <div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav-3-tab">
+        <div id="txt-drawer">
+          <input id="txt" placeholder="文字" type="text">
+          &nbsp;大小:
+          <input type="range" max="100" min="1" step="1" value="1" id="font"
+            oninput="$('.font-val').html($('#font').val())" onfocus="$('.font-val').html($('#font').val())"><span
+            class="font-val">1</span>
+          &nbsp;顏色:
+          <input placeholder="顏色選擇"
+            data-jscolor="{palette: '#000000 #7d7d7d #870014 #ec1c23 #ff7e26 #fef100 #22b14b #00a1e7 #3f47cc #a349a4 #ffffff #c3c3c3 #b87957 #feaec9 #ffc80d #eee3af #b5e61d #99d9ea #7092be #c8bfe7',closeButton:true, closeText:'關閉',backgroundColor:'#fff', buttonColor:'#000'}"
+            value="ff0000ff" id="txt-color">
+          <!--<select id="font-1">
+          <option value="px">px</option>
+          <option value="pc">pc</option>
+          <option value="em">em</option>
+          <option value="vw">vw</option>
+        </select>-->
+
+          <input type="radio" id="r1-2" name="r1" checked><label for="r1-2">fill</label>
+          <input type="radio" id="r1-1" name="r1"><label for="r1-1">stroke</label>
+          <button id="drawText" class="btn btn-success"
+            onclick='drawText = true;$("#txt-helper").html("請在畫布上指定一點");$("#drawtxt-active").show();canvas.style.cursor = "text";'>指定點並繪製</button>
+          <div id="txt-helper"></div>
+          <div class="helper"></div>
+        </div>
+      </div>
+      <div class="tab-pane fade  " id="nav-7" role="tabpanel" aria-labelledby="nav-7-tab">
+
+        <div>
+
+          畫布大小: <span class="wh"></span>
+          <button class="btn btn-warning" data-bs-toggle="modal" id="changeCanvas"
+            data-bs-target="#exampleModal-3">變更</button>
+
+        </div>
+
+        <div class="helper"></div>
+
+      </div>
+      <div class="tab-pane fade  " id="nav-8" role="tabpanel" aria-labelledby="nav-8-tab">
+
+        <button class="btn-file btn-primary btn" id="upload-img-p">
+          <input type="file" id="upload-img" accept="image/jpeg, image/png">
+
+          上傳</button>
+
+
+        <button class="btn btn-success" id="draw-img" onclick='
+
+drawImg = true;$("#img-helper").html("請在畫布上指定一點");
+$("#drawimg-active").show();
+canvas.style.cursor ="url(img/img-cursor.png)";
+
+
+'>繪製</button>
+
+        <span id="img-helper"></span>
+        <div id="upload-img-preview"></div>
+
+        <script>
+          $("#upload-img").change(function () {
+            $("#upload-img-preview").html(""); // 清除預覽
+            readURL(this);
+          });
+
+          function readURL(input) {
+            if (input.files && input.files.length >= 0) {
+              var upload_img_data;
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                let img = $("<img width='300' height='200'>").attr('src', e.target.result);
+                $("#upload-img-preview").append(img);
+                console.log(e.target.result);
+                upload_img_data = e.target.result;
+                upload_img = new Image();
+                /* upload_img.onload = function(){
+               
+                   }*//*/*/
+                upload_img.src = e.target.result;
+              };
+
+            }
+            reader.readAsDataURL(input.files[0]);
+
+
+          }
+
+        </script>
+        <div class="helper"></div>
+
+      </div>
+      <div class="tab-pane fade  " id="nav-4" role="tabpanel" aria-labelledby="nav-4-tab">
+
+        <button id="clearCanvas" class="btn btn-warning" data-bs-toggle="modal"
+          data-bs-target="#exampleModal">清除所有筆跡</button>
+        <div class="helper"></div>
+
+      </div>
+      <div class="tab-pane fade  " id="nav-5" role="tabpanel" aria-labelledby="nav-5-tab">
+        <div style="display: flex;">
+          <div class="form-check form-switch">
+
+            <label for="r2">唯讀模式</label><input type="checkbox" id="r2" onchange="mode()" class="form-check-input ">
+            <div id="statue" style="background-color: #000;"></div>
+          </div>
+          <div class="form-check form-switch">
+
+            <label for="c1">深色模式</label>
+            <input type="checkbox" id="c1" onchange="
+          if(this.checked && !readonly){ //正常黑夜模式
+            $('body').css('background-color','#000');
+            $('.nav-link').css('background-color','#ffffff');
+$('.dark').css('background-color','rgb(46 46 46)');
+$('.modal-title').css('color','#fff');
+$('.btn-close').css('filter','invert(1) grayscale(100%) brightness(200%)');
+            $('.modal-body').css('background-color','rgb(46 46 46)');
+            $('.modal-body').css('color','#fff');
+    
+          }else
+          if(readonly && this.checked){ //唯讀模式+黑夜模式(Tabs不做變化)
+            $('body').css('background-color','#000');
+            $('.dark').css('background-color','rgb(46 46 46)');
+$('.dark').css('color','#fff');
+$('.modal-title').css('color','#fff');
+$('.no-dark').css('backgroundcolor','#fff');
+$('.btn-close').css('filter','invert(1) grayscale(100%) brightness(200%)');
+            $('.modal-body').css('background-color','rgb(46 46 46)');
+            $('.modal-body').css('color','#fff');
+          }
+          else
+          if(!this.checked){ //白天模式
+            $('body').css('background-color','#fff');
+            $('.dark').css('background-color','#fff');
+$('.dark').css('color','#000');
+$('.modal-title').css('color','#000');
+$('.btn-close').css('filter','none');
+            $('.modal-body').css('background-color','#fff');
+            $('.modal-body').css('color','#000');
+ 
+          }
+          
+          " class="form-check-input ">
+
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="nav-6" role="tabpanel" aria-labelledby="nav-6-tab">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal-2"
+          onclick="document.getElementById('preview').setAttribute('src',canvas.toDataURL());document.getElementById('download').href=canvas.toDataURL()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download"
+            viewBox="0 0 16 16">
+            <path
+              d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+            <path
+              d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+          </svg>
+          下載圖片</button>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">清除所有筆跡?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          這項操作<b>無法復原</b>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            取消
+          </button>
+          <button type="button" data-bs-dismiss="modal" class="btn btn-warning" onclick="
+       if(readonly){
+        }else{
+  ctx.clearRect(0, 0, canvas.width,canvas.height,);
+  Toast.toast('已清除所有筆跡',3000)
+  }">清除</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="exampleModal-2" tabindex="-1" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">下載圖片</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          預覽:<br>
+          <img id="preview" style="max-width: 25vw; max-height: 20vw;" box alt="顯示圖片時發生問題">
+          <script>//document.getElementById('preview').setAttribute('src',canvas.toDataURL())</script>
+          <p>圖片尺寸:<span class="wh"></span></p>
+          <a href="#" download="draw.png" class="btn btn-success" id="download"
+            onclick="this.href=canvas.toDataURL();">下載</a>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            關閉
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+ <div class="modal fade" id="exampleModal-3" tabindex="-1" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">變更畫布大小</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          若變更畫布大小，之前的筆跡會<b>全部消失</b>
+          <p>
+            是否確定要繼續?
+          </p>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            取消
+          </button>
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal" data-bs-toggle="modal"
+            data-bs-target="#exampleModal-4">
+            確定
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModal-4" tabindex="-1" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">變更畫布大小</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <button class="btn btn-primary" onclick="
+
+
+$('#sethei').val(window.innerHeight - 120);
+$('#setwid').val(window.innerWidth - 50);
+">自動調整</button>
+          <span id="autoset"></span>
+
+          <div>
+            <hr>
+          </div>
+          <div class="alert alert-danger" role="alert">
+            注意:使用過大的畫布可能帶來<b>繪圖卡頓或者無法繪畫</b>
+          </div>
+
+          寬度<input type="number" id="setwid" max="5000"><br>
+          高度<input type="number" id="sethei" max="5000">
+          <script>
+
+            $('#autoset').html('將自動調整寬高到符合視窗大小，按下&nbsp;確定&nbsp;以套用');
+
+
+          </script>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            取消
+          </button>
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal" onclick="
+          if($('#sethei').val()>5000||$('#setwid').val()>5000||$('#sethei').val()==''||$('#setwid').val()==''||$('#sethei').val()==0||$('#setwid').val()==0){
+            var _Modal5 = new bootstrap.Modal(document.getElementById('exampleModal-5'));
+            _Modal5.toggle()
+          }else{
+
+          canvas.height = $('#sethei').val();
+          canvas.width = $('#setwid').val();
+          $('.wh').html(canvas.width+'*'+canvas.height);
+          Toast.toast('已設定畫布大小:<br>'+canvas.width+'*'+canvas.height,5000)
+          }">
+
+            確定
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModal-5" tabindex="-1" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">畫布設定失敗</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          你輸入的寬度或高度可能有誤(不能超過5000，也不能空白或為0)
+          <p>
+            是否要重新輸入?
+          </p>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            取消
+          </button>
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal" data-bs-toggle="modal"
+            data-bs-target="#exampleModal-4">
+            確定
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModal-x" tabindex="-1" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">程式錯誤</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="err-msg">
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            取消
+          </button>
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal">
+            確定
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.0/js/bootstrap.js'
+  integrity='sha512-39Q5Yw4jtWPVkYu5Dry3HiRh6DWG4FDODb/rHF+X2Xp0kzhg9VgTyYV209uQ/EsqPDP/4dDvwm1rb8JgnAkHNg=='
+  crossorigin='anonymous'></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.8/jscolor.js'
+  integrity='sha512-mtiG+kTbrG6RDYwzcVr6S3kIhSsdAkuft9To1ILQklUSoiBRysnRoqEz6qdJPgLz1ecmndQmTITjCi9jmjRe6w=='
+  crossorigin='anonymous'></script>
+
+
+  <script>
+
+
+    const canvas = document.querySelector('#canvas');
+    const ctx = canvas.getContext('2d');  // 取得 Canvas 的渲染環境及其繪圖函數
+
+    canvas.height = window.innerHeight - 120;
+    canvas.width = window.innerWidth - 50;
+    var wid = canvas.width,
+      hei = canvas.height,
+      download = document.getElementById('download'),
+      upload_img;
+
+
+
+    console.info(wid);
+    console.info(hei);
+    canvas.style.cursor = "crosshair";
+    ctx.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
+    ctx.lineCap = 'round';  // 筆觸預設為 "圓形"
+    ctx.lineWidth = 1;  // 筆頭寬度
+    //ctx.font = "60px serif";
+    //ctx.textBaseline = "hanging";
+
+    $('.wh').html(wid + '*' + hei)
+    $('#drawtxt-active').hide();
+    $('#drawimg-active').hide();
+
+    ctx.strokeStyle = document.getElementById("color").value;  // 筆觸顏色
+    ctx.lineWidth = document.getElementById("pen").value;
+    ctx.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
+    ctx.lineCap = 'round';  // 筆觸預設為 "圓形"
+    ctx.lineWidth = 1;  // 筆頭寬度
+
+    var
+      isDrawing = false, // 是否允許繪製  (或說是否是 mousedown 下筆狀態)
+      readonly = false, //是否唯讀狀態
+      drawText = false, //是否繪製文字
+      drawImg = false; //是否繪製影像
+    //--------------------------------------//
+    $('#statue').html('<span style="color:#00b409">非唯讀狀態，可以編輯</span>');
+    /* 繪製時的起點座標 */
+    let lastX = 0;
+    let lastY = 0;
+    /*========== Events Binding ==========*/
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mouseout', () => isDrawing = false);
+    canvas.addEventListener('mousedown', (e) => {
+      if (drawText) {
+        drawImg = false;
+        $("#img-helper").html("");
+        $('#drawimg-active').hide();
+        drawtext($("#txt").val(), $("#font").val() + 'px', e.offsetX, e.offsetY);
+        drawText = false;
+        $("#txt-helper").html("");
+        $('#drawtxt-active').hide();
+        canvas.style.cursor = "crosshair";
+      } else
+
+        if (drawImg) {
+          drawText = false;
+          dirty();
+          $("#txt-helper").html("");
+          $('#drawtxt-active').hide();
+          ctx.drawImage(upload_img, e.offsetX, e.offsetY);
+          drawImg = false;
+          $("#img-helper").html("");
+          $('#drawimg-active').hide();
+          canvas.style.cursor = "crosshair";
+        }
+
+        else {
+          isDrawing = true; // 允許繪製
+          drawImg = drawText = false;
+          [lastX, lastY] = [e.offsetX, e.offsetY]; // 設定起始點
+          ctx.strokeStyle = document.getElementById("color").value;
+          ctx.lineWidth = document.getElementById("pen").value;
+        }
+    });
+    //=============================================================//
+    canvas.addEventListener('mousemove', draw);
+    ctx.strokeStyle = document.getElementById("color").value;
+    ctx.lineWidth = document.getElementById("pen").value;
+    /*========== 繪製函數；在 mousemove 的時候使用 ==========*/
+    function draw(e) {
+      if (!isDrawing || readonly) return;  // 沒有允許繪製即退出
+      ctx.save();
+      /* 繪製路線 Setting */
+      dirty();
+
+      ctx.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
+      ctx.lineCap = 'round';  // 筆觸預設為 "圓形"
+
+      ctx.beginPath();  // 開始路徑 or Reset
+      ctx.moveTo(lastX, lastY);  // 設定起點
+      ctx.lineTo(e.offsetX, e.offsetY);  // 設定終點
+      ctx.stroke();  // 依照設定開始繪製
+
+      [lastX, lastY] = [e.offsetX, e.offsetY];  // 位置更新
+      download.href = canvas.toDataURL();
+
+
+      //---------------------------------------------------------------------//
+
+      /*
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      if(ctx.lineWidth != 3){
+        ctx.lineWidth=ctx.lineWidth +1;
+      }else 
+      if(ctx.lineWidth == 3 ||ctx.lineWidth>3){
+        ctx.lineWidth= 1;
+      }
+      
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+      [lastX, lastY] = [e.offsetX, e.offsetY];  // 位置更新
+      */
+    }
+
+    function drawtext(text, font, x, y) {
+      if (readonly) { return; } else {
+        dirty()
+        ctx.font = font + " serif";
+        if (document.getElementById('r1-1').checked) {
+          ctx.strokeStyle = document.getElementById("txt-color").value;  // 筆觸顏色
+
+          ctx.strokeText(text, x, y);
+
+          ctx.strokeStyle = document.getElementById("color").value;
+        } else {
+          ctx.fillStyle = document.getElementById("txt-color").value;  // 筆觸顏色
+
+          ctx.fillText(text, x, y);
+          ctx.strokeStyle = document.getElementById("color").value;
+        }
+      }
+    }
+    function mode() {
+
+      if (!document.getElementById('r2').checked) {
+        readonly = false;
+        canvas.style.cursor = "crosshair";
+        $('#canvas').css({
+          'border-color': '#00b409'
+        });
+
+        $('#statue').html('<span style="color:#00b409">非唯讀狀態，可以編輯</span>');
+        $('.helper').html('');
+        $('.draw-dis').css({
+          'background-color': '#fff'
+        });
+        $('.draw-dis-half').css({
+          'background-color': '#fff'
+        });
+        document.getElementById('color').removeAttribute('disabled');
+        document.getElementById('pen').removeAttribute('disabled');
+        document.getElementById('txt').removeAttribute('disabled');
+        document.getElementById('font').removeAttribute('disabled');
+        document.getElementById('txt-color').removeAttribute('disabled');
+        document.getElementById('changeCanvas').removeAttribute('disabled');
+        document.getElementById('r1-1').removeAttribute('disabled');
+        document.getElementById('r1-2').removeAttribute('disabled');
+        document.getElementById('clearCanvas').removeAttribute('disabled');
+        document.getElementById('drawText').removeAttribute('disabled');
+        document.getElementById('draw-img').removeAttribute('disabled');
+        document.getElementById('upload-img').removeAttribute('disabled');
+        document.getElementById('upload-img-p').removeAttribute('disabled');
+
+      } else {
+        readonly = true;
+        canvas.style.cursor = "default";
+        $('#canvas').css({
+          'border-color': '#ff0000'
+        });
+        $('.draw-dis').css({
+          'background-color': '#ccc'
+        });
+        $('.draw-dis-half').css({
+          'background-color': 'rgb(225 218 218)'
+        });
+        $('#statue').html('<span style="color:#ff0000">唯讀狀態，無法編輯</span>');
+        $('.helper').html('<span class="badge bg-danger">唯讀狀態，無法使用</span>');
+        document.getElementById('color').setAttribute('disabled', 'true');
+        document.getElementById('pen').setAttribute('disabled', 'true');
+        document.getElementById('txt').setAttribute('disabled', 'true');
+        document.getElementById('font').setAttribute('disabled', 'true');
+        document.getElementById('changeCanvas').setAttribute('disabled', 'true');
+        document.getElementById('txt-color').setAttribute('disabled', 'true');
+        document.getElementById('r1-1').setAttribute('disabled', 'true');
+        document.getElementById('r1-2').setAttribute('disabled', 'true');
+        document.getElementById('clearCanvas').setAttribute('disabled', 'true');
+        document.getElementById('drawText').setAttribute('disabled', 'true');
+        document.getElementById('draw-img').setAttribute('disabled', 'true');
+        document.getElementById('upload-img').setAttribute('disabled', 'true');
+        document.getElementById('upload-img-p').setAttribute('disabled', 'true');
+      }
+
+    }
+
+    function dirty() {
+      window.isDirty = true;
+
+    }
+    window.addEventListener("beforeunload", function (e) {
+      if (window.isDirty) {
+        (e || window.event).returnValue = ""; // Gecko + IE
+        return ""; // Gecko + Webkit, Safari, Chrome etc.
+      }
+
+      return undefined;
+    });
+
+  </script>
+  <script>
+    window.onerror = function (sMessage, sUrl, sLine) {
+      $('#err-msg').html('說明:' + sMessage + '' + '行數:' + sLine + '來源:' + sUrl)
+
+      var _Modalx = new bootstrap.Modal(document.getElementById('exampleModal-x'));
+      _Modalx.toggle()
+    }
+  </script>
+  <script>
+    function delay(n) {
+      return new Promise(function (resolve) {
+        setTimeout(resolve, n * 1000);
+      });
+    }
+
+    async function myAsyncFunction() {
+
+
+
+      await delay(2);
+      $('#loading').css('opacity', '0');
+      await delay(0.5);
+      $('#loading').css('display', 'none');
+
+
+
+    }
+
+
+    window.onload =
+      myAsyncFunction();
+
+
+  </script>
+</body>
+
+</html>
