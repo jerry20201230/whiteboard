@@ -213,6 +213,21 @@
         #toast {
             z-index: 20000 !important;
         }
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+ 
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(121, 121, 121);
+   
+}
     </style>
 
 
@@ -279,7 +294,7 @@
             <div class="g-recaptcha" data-sitekey="6LcJwl4hAAAAADWzbkUuYV1CSFW0g6CMs9ZoVaaS" data-theme="light"
                 data-size="normal" data-callback="verifyCallback" data-expired-callback="expiredCallback"
                 data-error-callback="errorCallback">
-               
+                顯示reCAPTCHA時發生錯誤
             </div>
  <div class="alert alert-warning flex" id="recaptcha-placeholder" style="width: 50%;" hidden>
                     <div>

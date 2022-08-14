@@ -23,6 +23,8 @@ var y1 = []
 var color = []
 var action = []
 
+var data = []
+
 
 function onConnection(socket){
   socket.on('drawing', (data)=>{
@@ -34,6 +36,9 @@ function onConnection(socket){
     color.push(data.color)
     action.push(data.action)
     console.log("[POST] data")
+
+
+   // data[_k].push({"x0"})
 
 })
 

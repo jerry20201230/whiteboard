@@ -77,6 +77,9 @@
   window.addEventListener('resize', onResize, false);
   onResize();
 
+
+
+
   function reload_ui(){
     $("#whiteboard-loading").html(`        <div class="spinner-border text-primary" role="status">
     <span class="visually-hidden">正在同步資料...</span>
@@ -88,6 +91,8 @@
 
     $("#infoText").text("正在同步...")
   }
+
+
 
   function drawLine(x0, y0, x1, y1, color, emit){
     context.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
@@ -108,6 +113,15 @@
     var w = canvas.width;
     var h = canvas.height;
 
+   /*/ socket.emit('drawing', {
+      x0: x0 / w ,
+      y0: y0 / h ,
+      x1: x1 / w ,
+      y1: y1 / h ,
+      color: color,
+      action:"line"
+    });/*/
+
     socket.emit('drawing', {
       x0: x0 / w ,
       y0: y0 / h ,
@@ -115,8 +129,34 @@
       y1: y1 / h ,
       color: color,
       action:"line"
-    });
-  }
+    })
+}
+
+/*
+    //alert("err!")
+   /* $("#whiteboard-loading").html(`        
+    <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="text-danger bi bi-x-circle-fill" viewBox="0 0 16 16">
+    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+  </svg>
+  <p></p>
+<span class=text-danger >同步資料失敗</span>
+<p></p>
+<span class=text-danger>錯誤碼:${err}</span>
+<p></p><span class=text-primary>建議作法:<br>
+<ul>
+<li>伺服器可能暫時忙碌中，請稍等</li>
+<li>檢查網路狀態/重新同步</li>
+
+</ul>
+<p></p>
+<button class="btn btn-primary" onclick="socket.emit('getData','p');reload_ui()">重新同步</button>
+</span>`)
+$(".whiteboard").hide()
+$("#whiteboard-loading").show()
+$("#infoText").text("發生錯誤")*/
+
+
+ 
 
   function onMouseDown(e){
     drawing = true;
@@ -165,7 +205,6 @@ $("#color-picker").on("blur",function(){
     drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
   }
 
-  // make the canvas fill its parent
   function onResize() {
     canvas.width = window.innerWidth -50;
     canvas.height = window.innerHeight -150;
@@ -178,8 +217,8 @@ $("#color-picker").on("blur",function(){
 <span>正在同步資料...</span>`)
     $("#whiteboard-loading").show()
     $(".whiteboard").hide()
-    socket.emit('getData','p')
-    $("#infoText").text("正在同步...")
+    socket.emit('getData','p') 
+  $("#infoText").text("正在同步...")
   }
 
 
