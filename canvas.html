@@ -943,18 +943,19 @@ $('#setwid').val(window.innerWidth - 50);
     }
 
     function drawLine(x0, y0, x1, y1, color, emit){
-    context.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
-    context.lineCap = 'round';  // 筆觸預設為 "圓形"    
-    context.strokeStyle = color;
-    context.lineWidth = 2;
-    context.beginPath();
-    context.moveTo(x0, y0);
+      
+    ctx.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
+    ctx.lineCap = 'round';  // 筆觸預設為 "圓形"    
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
 
-    context.stroke();
-    context.lineTo(x1, y1);
+    ctx.stroke();
+    ctx.lineTo(x1, y1);
 
 
-    context.stroke();
+    ctx.stroke();
   //  context.closePath();
 
 
