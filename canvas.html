@@ -892,18 +892,14 @@ $('#setwid').val(window.innerWidth - 50);
 
       
 
-    socket.timeout(5000).emit('drawing', {
+    socket.emit('drawing', {
       x0: lastX / canvas.width ,
       y0: lastY / canvas.height ,
       x1: e.offsetX / canvas.width ,
       y1: e.offsetY / canvas.height ,
       color: document.getElementById("color").value,
       action:"line"
-    }, (err) => {
-  if (err) {
-    console.log(err)
-  }
-});
+    });
 
       [lastX, lastY] = [e.offsetX, e.offsetY];  // 位置更新
       download.href = canvas.toDataURL();
@@ -1054,10 +1050,59 @@ $('#setwid').val(window.innerWidth - 50);
       return undefined;
     });
 
+socket.on("drawing",(data)=>{
+var w = canvas.width;
+    var h = canvas.height;
+    drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
 
+})
 
 
     socket.on('getData',(data)=>{
+
+var err = false
+for(let i=0;i<data.x1.length;i++){
+
+  var w = canvas.width;
+  var h = canvas.height;
+  if(data.action[i] == "line"){
+
+  drawLine(data.x0[i] * w, data.y0[i] * h, data.x1[i] * w, data.y1[i] * h, data.color[i]);
+}else{
+  $("#whiteboard-loading").html(`        
+  <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="text-danger bi bi-x-circle-fill" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+</svg>
+<p></p>
+<span class=text-danger >同步資料失敗</span>
+<p></p>
+<span class=text-danger>錯誤碼:Unknow action: ${data.action[i]} (at data-action :${i}:1)</span>
+<p></p><span class=text-primary>建議作法:<br>
+<ul>
+
+<li>畫布資訊可能有誤，請重新同步或建立新畫布</li>
+
+</ul>
+<p></p>
+<button class="btn btn-primary" onclick="socket.emit('getData','p');reload_ui()">重新同步</button>
+</span>`)
+err = true
+$("#infoText").text("發生錯誤")
+break;
+}
+}
+if(!err){
+$("#infoText").text("就緒")
+
+$("#whiteboard-loading").hide()
+$(".whiteboard").show()
+}else{
+$("#infoText").text("發生錯誤")
+
+}
+})
+
+socket.on('getData',(data)=>{
 
 var err = false
 for(let i=0;i<data.x1.length;i++){
@@ -1130,10 +1175,18 @@ $("#infoText").text("發生錯誤")
     }
 
 
-    window.onload =
-      myAsyncFunction();
+    window.onload =myAsyncFunction();
 
+      window.onblur = function () { 
+  if(socket.connected){
+  $("#browser-icon").attr('href',"/icon/icon-black.png")
+  }
+}
 
+window.onfocus = function () { 
+  if(socket.connected){
+  $("#browser-icon").attr('href',"/icon/icon-white.png")
+   } }
   </script>
 </body>
 

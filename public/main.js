@@ -219,6 +219,7 @@ $("#color-picker").on("blur",function(){
     $(".whiteboard").hide()
     socket.emit('getData','p') 
   $("#infoText").text("正在同步...")
+  
   }
 
 
