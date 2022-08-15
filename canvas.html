@@ -822,7 +822,7 @@ $('#setwid').val(window.innerWidth - 50);
     ctx.lineWidth = document.getElementById("pen").value;
     ctx.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
     ctx.lineCap = 'round';  // 筆觸預設為 "圓形"
-    ctx.lineWidth = 1;  // 筆頭寬度
+   // ctx.lineWidth = 1;  // 筆頭寬度
 
     var
       isDrawing = false, // 是否允許繪製  (或說是否是 mousedown 下筆狀態)
@@ -948,6 +948,7 @@ $('#setwid').val(window.innerWidth - 50);
     ctx.lineCap = 'round';  // 筆觸預設為 "圓形"    
     ctx.strokeStyle = color;
     ctx.lineWidth = size;
+    
     ctx.beginPath();
     ctx.moveTo(x0, y0);
 
