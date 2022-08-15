@@ -896,7 +896,9 @@ $('#setwid').val(window.innerWidth - 50);
       x1: e.offsetX / canvas.width ,
       y1: e.offsetY / canvas.height ,
       color: document.getElementById("color").value,
-      action:"line"
+      action:"line",
+      size:document.getElementById("pen").value
+
     });
 
       [lastX, lastY] = [e.offsetX, e.offsetY];  // 位置更新
@@ -940,16 +942,16 @@ $('#setwid').val(window.innerWidth - 50);
       }
     }
 
-    function drawLine(x0, y0, x1, y1, color, emit){
+    function drawLine(x0, y0, x1, y1, color,size, emit){
       
     ctx.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
     ctx.lineCap = 'round';  // 筆觸預設為 "圓形"    
     ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = size;
     ctx.beginPath();
     ctx.moveTo(x0, y0);
 
-    ctx.stroke();
+   
     ctx.lineTo(x1, y1);
 
 
@@ -1052,7 +1054,7 @@ $('#setwid').val(window.innerWidth - 50);
 socket.on("drawing",(data)=>{
 var w = canvas.width;
     var h = canvas.height;
-    drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
+    drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h,data.size, data.color);
 
 })
 
@@ -1066,7 +1068,7 @@ for(let i=0;i<data.x1.length;i++){
   var h = canvas.height;
   if(data.action[i] == "line"){
 
-  drawLine(data.x0[i] * w, data.y0[i] * h, data.x1[i] * w, data.y1[i] * h, data.color[i]);
+  drawLine(data.x0[i] * w, data.y0[i] * h, data.x1[i] * w, data.y1[i] * h,data.size, data.color[i]);
 }else{
   $("#whiteboard-loading").html(`        
   <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="text-danger bi bi-x-circle-fill" viewBox="0 0 16 16">

@@ -23,22 +23,20 @@ var y1 = []
 var color = []
 var action = []
 
-var data = []
+var cvsdata = []
 
 
 function onConnection(socket){
   socket.on('drawing', (data)=>{
     socket.broadcast.emit('drawing', data);
-    x0.push(data.x0)
-    y0.push(data.y0)
-    x1.push(data.x1)
-    y1.push(data.y1)
-    color.push(data.color)
-    action.push(data.action)
-    console.log("[POST] data")
-
-
-   // data[_k].push({"x0"})
+   cvsdata.push({
+    "action":data.action,
+    "x0":data.x0,
+    "x1":data.x1,
+    "y0":data.y0,
+    "y1":data.y1,
+    "size":data.size,
+    "color":data.color})
 
 })
 
