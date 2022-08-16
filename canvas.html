@@ -89,6 +89,7 @@ jscolor:2.4.6
       display: none;
       border-radius: 5px;
       border: rgb(26, 26, 26) 1px solid;
+
       /*  box-shadow: #525252 0px 15px 12px 0px;
 */
     }
@@ -96,7 +97,7 @@ jscolor:2.4.6
     .menu-item {
       border-bottom: 1px solid #000;
       user-select: none;
-
+      padding: 5px;
 
 
     }
@@ -261,7 +262,7 @@ jscolor:2.4.6
   </div>
 
 
-  <div id="menu">
+  <div id="menu" class="shadow">
 
     <div class="menu-item" onclick="location.reload()">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise"
@@ -1108,7 +1109,7 @@ $("#infoText").text("發生錯誤")
 socket.on('getData',(data)=>{
 
 var err = false
-for(let i=0;i<data.x1.length;i++){
+for(let i=0;i<data.length;i++){
 
   var w = canvas.width;
   var h = canvas.height;
@@ -1198,8 +1199,8 @@ window.onfocus = function () {
 
    function onResize() {
     console.log("resize")
-    canvas.width = window.innerWidth -50;
-    canvas.height = window.innerHeight -150;
+    canvas.width = (window.innerWidth -50);
+    canvas.height = (window.innerHeight -150);
     $("#whiteboard-loading").css("width",window.innerWidth -50)
     $("#whiteboard-loading").css("height",window.innerHeight -150)
     $("#whiteboard-loading").html(`        <div class="spinner-border text-primary" role="status">
