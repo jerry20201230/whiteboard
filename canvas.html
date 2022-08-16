@@ -879,13 +879,13 @@ $('#setwid').val(window.innerWidth - 50);
       ctx.save();
       /* 繪製路線 Setting */
       dirty();
-
+   ctx.beginPath();  // 開始路徑 or Reset
       ctx.strokeStyle = document.getElementById("color").value;
     ctx.lineWidth = document.getElementById("pen").value;
       ctx.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
       ctx.lineCap = 'round';  // 筆觸預設為 "圓形"
 
-      ctx.beginPath();  // 開始路徑 or Reset
+   
       ctx.moveTo(lastX, lastY);  // 設定起點
       ctx.lineTo(e.offsetX, e.offsetY);  // 設定終點
       ctx.stroke();  // 依照設定開始繪製
@@ -945,13 +945,13 @@ $('#setwid').val(window.innerWidth - 50);
     }
 
     function drawLine(x0, y0, x1, y1, color,size, emit){
-      
+       ctx.beginPath();
     ctx.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
     ctx.lineCap = 'round';  // 筆觸預設為 "圓形"    
     ctx.strokeStyle = color;
     ctx.lineWidth = size;
     
-    ctx.beginPath();
+   
     ctx.moveTo(x0, y0);
 
    
