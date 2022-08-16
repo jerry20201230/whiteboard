@@ -16,12 +16,6 @@ app.get('*', function (req, res) {
   res.status(404).sendFile(__dirname + '/public/404.html');
 });
 
-var x0 = []
-var y0 = []
-var x1 = []
-var y1 = []
-var color = []
-var action = []
 
 var cvsdata = []
 
@@ -43,7 +37,7 @@ function onConnection(socket){
 socket.on("getData",function(){
 
   
-  io.to(socket.id).emit("getData",{'x0':x0,'y0':y0,'x1':x1,'y1':y1,'color':color,'action':action})
+  io.to(socket.id).emit("getData",cvsdata)
   console.log("[GET] data")
 })
 }
