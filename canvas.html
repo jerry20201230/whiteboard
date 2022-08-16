@@ -872,8 +872,7 @@ $('#setwid').val(window.innerWidth - 50);
     });
     //=============================================================//
     canvas.addEventListener('mousemove',throttle(draw,10));
-    ctx.strokeStyle = document.getElementById("color").value;
-    ctx.lineWidth = document.getElementById("pen").value;
+
     /*========== 繪製函數；在 mousemove 的時候使用 ==========*/
     function draw(e) {
       if (!isDrawing || readonly) return;  // 沒有允許繪製即退出
@@ -881,6 +880,8 @@ $('#setwid').val(window.innerWidth - 50);
       /* 繪製路線 Setting */
       dirty();
 
+      ctx.strokeStyle = document.getElementById("color").value;
+    ctx.lineWidth = document.getElementById("pen").value;
       ctx.lineJoin = 'round';  // 兩條線交匯處產生 "圓形" 邊角
       ctx.lineCap = 'round';  // 筆觸預設為 "圓形"
 
@@ -1109,6 +1110,7 @@ $("#infoText").text("發生錯誤")
 socket.on('getData',(data)=>{
 
 var err = false
+try{
 for(let i=0;i<data.length;i++){
 
   var w = canvas.width;
@@ -1148,6 +1150,7 @@ $(".whiteboard").show()
 $("#infoText").text("發生錯誤")
 
 }
+}catch(e){console.log(e)}
 })
   </script>
   <script>
