@@ -1053,6 +1053,7 @@ $('#setwid').val(window.innerWidth - 50);
     });
 
 socket.on("drawing",(data)=>{
+  console.log(data)
 var w = canvas.width;
     var h = canvas.height;
     drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h,data.size, data.color);
@@ -1061,7 +1062,7 @@ var w = canvas.width;
 
 
     socket.on('getData',(data)=>{
-
+console.log(data)
 var err = false
 for(let i=0;i<data.x1.length;i++){
 
@@ -1194,8 +1195,9 @@ window.onfocus = function () {
 
 
 
-   window.onresize = onResize()
+
    function onResize() {
+    console.log("resize")
     canvas.width = window.innerWidth -50;
     canvas.height = window.innerHeight -150;
     $("#whiteboard-loading").css("width",window.innerWidth -50)
@@ -1211,6 +1213,7 @@ window.onfocus = function () {
   $("#infoText").text("正在同步...")
   
   }
+  window.onresize = onResize()
   </script>
 </body>
 
