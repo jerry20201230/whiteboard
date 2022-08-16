@@ -890,7 +890,7 @@ $('#setwid').val(window.innerWidth - 50);
       ctx.lineTo(e.offsetX, e.offsetY);  // 設定終點
       ctx.stroke();  // 依照設定開始繪製
 
-      
+      ctx.closePath()
 
     socket.emit('drawing', {
       x0: lastX / canvas.width ,
@@ -959,6 +959,7 @@ $('#setwid').val(window.innerWidth - 50);
 
 
     ctx.stroke();
+    ctx.closePath()
   //  context.closePath();
 
 
