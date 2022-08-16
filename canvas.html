@@ -1069,7 +1069,7 @@ for(let i=0;i<data.length;i++){
 
   var w = canvas.width;
   var h = canvas.height;
-  if(data.action[i] == "line"){
+  if(data[i].action == "line"){
 
   drawLine(data[i].x0 * w, data[i].y0 * h, data[i].x1 * w, data[i].y1 * h,data[i].size, data[i].color);
 }else{
