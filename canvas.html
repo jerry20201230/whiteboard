@@ -1071,14 +1071,15 @@ var w = canvas.width;
 socket.on('getData',(data)=>{
 
 var err = false
+console.log(data)
 try{
 for(let i=0;i<data.length;i++){
 
   var w = canvas.width;
   var h = canvas.height;
-  if(data.action[i] == "line"){
+  if(data[i].action == "line"){
 
-  drawLine({"x0":data.x0[i] * w, "y0":data.y0[i] * h, "x1":data.x1[i] * w, "y1":data.y1[i] * h, "color":data.color[i],"size":daat.size[i]});
+  drawLine({"x0":data[i].x0 * w, "y0":data[i] .y0* h, "x1":data[i].x1 * w, "y1":data[i].y1 * h, "color":data[i].color,"size":data[i].size});
 }else{
   $("#whiteboard-loading").html(`        
   <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="text-danger bi bi-x-circle-fill" viewBox="0 0 16 16">
