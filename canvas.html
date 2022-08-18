@@ -641,7 +641,7 @@ $('.btn-close').css('filter','none');
       </div>
     </div>
   </div>
-  <div class="modal fade" id="exampleModal-3" tabindex="-1" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+  <div class="modal fade" id="exampleModal-3" tabindex="-1" aria-labelledby="exampleModalLabel-3" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content dark">
         <div class="modal-header">
@@ -669,7 +669,7 @@ $('.btn-close').css('filter','none');
     </div>
   </div>
 
-  <div class="modal fade" id="exampleModal-4" tabindex="-1" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+  <div class="modal fade" id="exampleModal-4" tabindex="-1" aria-labelledby="exampleModalLabel-4" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content dark">
         <div class="modal-header">
@@ -725,7 +725,7 @@ $('#setwid').val(window.innerWidth - 50);
     </div>
   </div>
 
-  <div class="modal fade" id="exampleModal-5" tabindex="-1" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+  <div class="modal fade" id="exampleModal-5" tabindex="-1" aria-labelledby="exampleModalLabel-5" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content dark">
         <div class="modal-header">
@@ -753,7 +753,7 @@ $('#setwid').val(window.innerWidth - 50);
     </div>
   </div>
 
-  <div class="modal fade" id="exampleModal-x" tabindex="-1" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+  <div class="modal fade" id="exampleModal-x" tabindex="-1" aria-labelledby="exampleModalLabel-x" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content dark">
         <div class="modal-header">
@@ -1057,8 +1057,12 @@ $('#setwid').val(window.innerWidth - 50);
       console.log(data)
       var w = canvas.width;
       var h = canvas.height;
-
+      if (data.action == "line") {
       drawLine({ "x0": data.x0 * w, "y0": data.y0 * h, "x1": data.x1 * w, "y1": data.y1 * h, "color": data.color, "size": data.size });
+    }
+    else{
+
+    }
     })
 
 
@@ -1086,15 +1090,19 @@ $('#setwid').val(window.innerWidth - 50);
 <p></p>
 <span class=text-danger >同步資料失敗</span>
 <p></p>
-<span class=text-danger>錯誤碼:Unknow action: ${data[i].action} (at data-action :${i}:1)</span>
+<span class=text-danger>錯誤碼:Unknow action: ${data[i].action} (at data-action :${i+1}:1)</span>
+
 <p></p><span class=text-primary>建議作法:<br>
 
-
-畫布資訊可能有誤，請重新同步或建立新畫布
-
+畫布設定可能有誤，請檢查<br>
+畫布資料可能有誤，請重新同步或建立新畫布<br>
+如果重新同步無法解決問題，請下載目前的專案
 
 <p></p>
+<div class=flex>
 <button class="btn btn-primary" onclick="socket.emit('getData','p');reload_ui()">重新同步</button>
+<button class="btn btn-primary" onclick="document.getElementById('preview').setAttribute('src',canvas.toDataURL());document.getElementById('download').href=canvas.toDataURL();var _Modal = new bootstrap.Modal(document.getElementById('exampleModal-2'));_Modal.toggle()">下載專案</button>
+</div>
 </span>`)
             err = true
             $("#infoText").text("發生錯誤")
