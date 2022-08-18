@@ -1066,11 +1066,11 @@ var w = canvas.width;
 
 socket.on('getData',(data)=>{
 
-var err = false
+var err = false,trace=0;
 
 try{
 for(let i=0;i<data.length;i++){
-
+  trace++
   var w = canvas.width;
   var h = canvas.height;
   if(data[i].action == "line"){
@@ -1108,7 +1108,13 @@ $(".whiteboard").show()
 $("#infoText").text("發生錯誤")
 
 }
-}catch(e){console.log(e)}
+}catch(e){
+
+  $('#err-msg').html(`can not read action ${data[trace].action} at data.action:${trace}:1`)
+
+var _Modalx = new bootstrap.Modal(document.getElementById('exampleModal-x'));
+_Modalx.toggle()
+}
 })
   </script>
   <script>
