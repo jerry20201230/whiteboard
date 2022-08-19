@@ -1102,6 +1102,7 @@ $('#setwid').val(window.innerWidth - 50);
 <div class=flex>
 <button class="btn btn-primary" onclick="socket.emit('getData','p');reload_ui()">重新同步</button>
 <button class="btn btn-primary" onclick="document.getElementById('preview').setAttribute('src',canvas.toDataURL());document.getElementById('download').href=canvas.toDataURL();var _Modal = new bootstrap.Modal(document.getElementById('exampleModal-2'));_Modal.toggle()">下載專案</button>
+<a class="btn btn-primary" href="https://github.com/jerry20201230/whiteboard/issues/new?labels=bug&body=問題描述(錯誤碼):Unknow+action:+${data[i].action}+(at+data-action+:${i+1}:1)" target="_blank">回報錯誤(GitHub)</a>
 </div>
 </span>`)
             err = true
